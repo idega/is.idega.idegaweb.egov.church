@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<processes>
+   <!--  
+    <processBundle bundle="is.idega.idegaweb.egov.bpm" processBundleLocationWithinBundle="resources/processes/GenericProcess/" autoload="false" version="1" />
+    -->	
+</processes>
