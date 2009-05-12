@@ -6,12 +6,18 @@
   	<artifactId>com.idega.block.egov</artifactId>
   	<version>4.1.3-SNAPSHOT</version>
   </parent>
-  <packaging>jar</packaging>
-  <name>Church</name>
   <groupId>com.idega.block.egov</groupId>
   <artifactId>is.idega.idegaweb.egov.church</artifactId>
   <version>4.1.3-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  <organization>
+    <name>idega software</name>
+    <url>http://www.idega.com/</url>
+  </organization>
+  <name>Church</name>
+  <description>e-Services of churches</description>
   <inceptionYear>2009</inceptionYear>
+  
   <scm>
     <!--
     <connection>scm:cvs:ext:${user.name}@code.idega.com:/idega/cvs:${groupId}/${artifactId}/</connection>
@@ -21,4 +27,26 @@
     <developerConnection>scm:cvs:ext:idegaweb@code.idega.com:/idega/cvs:com.idega.block.egov/is.idega.idegaweb.egov.church/</developerConnection>
     <tag>4.1.3-SNAPSHOT</tag>
   </scm>
+  
+  <developers>
+    <developer>
+      <name>Valdas Žemaitis</name>
+      <id>valdas</id>
+      <email>valdas@idega.com</email>
+      <organization>idega software</organization>
+      <roles/>
+    </developer>
+  </developers>
+  
+  <dependencies>
+  	<dependency>
+  		<groupId>com.idega.block.platform</groupId>
+  		<artifactId>com.idega.core</artifactId>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.idega.block.egov</groupId>
+  		<artifactId>is.idega.idegaweb.egov.course</artifactId>
+  	</dependency>
+  </dependencies>
+  
 </project>
