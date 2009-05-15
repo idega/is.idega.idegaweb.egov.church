@@ -1,0 +1,788 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ev="http://www.w3.org/2001/xml-events"
+    xmlns:idega="http://idega.com/xforms"
+    xmlns:xf="http://www.w3.org/2002/xforms"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <head>
+        <title>
+            <xf:output model="data_model" ref="instance('localized_strings')/form-title[@lang=instance('localized_strings')/current_language]"/>
+        </title>
+        <xf:model id="submission_model" schema="#fb-schema">
+            <xf:instance id="data-instance" xmlns="">
+                <data>
+                    <form_id>250</form_id>
+                    <Kennitala_fbc_7/>
+                    <Trflag_fbc_8/>
+                    <Netfang_fbc_14 xsi:nil="true"/>
+                    <Pstnmer_fbc_15/>
+                    <Borg_fbc_16/>
+                    <Nafn_fbc_17/>
+                    <Heimilisfang_fbc_18/>
+                    <Kyn_fbc_20/>
+                    <Fingardagur_fbc_23/>
+                    <Skli__fbc_26/>
+                    <Bekkur_fbc_27/>
+                    <Skrnardagur_fbc_29/>
+                    <Kennitala_fbc_32/>
+                    <Nafn_fbc_33/>
+                    <Kennitala_fbc_35/>
+                    <Nafn_fbc_37/>
+                    <Heimilisfang_fbc_38/>
+                    <Heimilisfang_fbc_39/>
+                    <Pstnmer_fbc_40/>
+                    <Pstnmer_fbc_41/>
+                    <Borg_fbc_42/>
+                    <Borg_fbc_43/>
+                    <Netfang_fbc_44/>
+                    <Netfng_fbc_45/>
+                    <Frekari_upplsingar__fbc_48/>
+                    <Smar_fbc_51/>
+                    <Smar_fbc_52/>
+                    <Smar_fbc_53/>
+                    <Vinnusmi__fbc_54/>
+                    <Vinnusmi__fbc_55/>
+                    <Smar_fbc_56/>
+                    <GSM_fbc_57/>
+                    <Tengsl_vi_fermingarbarn_fbc_58/>
+                    <Tengsl_vi_fermingarbarn_fbc_59/>
+                    <Nafn_mur_fbc_60/>
+                    <Nafn_fur_fbc_61/>
+                    <Fermingardagur_fbc_62/>
+                    <saveFormData>
+                        <submissionId/>
+                    </saveFormData>
+                </data>
+            </xf:instance>
+            <xf:instance id="control-instance">
+                <control xmlns="">
+                    <required>true</required>
+                    <readonly>false</readonly>
+                    <submission>false</submission>
+                    <generatePdf>false</generatePdf>
+                    <submissionButton/>
+                </control>
+            </xf:instance>
+            <xf:instance id="error-instance" xmlns="">
+                <data>
+                    <error for=""/>
+                </data>
+            </xf:instance>
+            <xf:bind id="errorsGroup" idega:shared="true"
+                nodeset="instance('error-instance')/error" relevant="instance('control-instance')/submission = 'true' and count-non-empty(instance('error-instance')/error)!=0"/>
+            <xf:bind id="errors" idega:shared="true" nodeset="instance('error-instance')/error[. != '']"/>
+            <xf:bind id="bind-submissionButton" idega:shared="true"
+                nodeset="instance('control-instance')/submissionButton" relevant="instance('control-instance')/readonly != 'true' and instance('control-instance')/generatePdf != 'true'"/>
+            
+            <xf:submission action="xformsBPM:/nouri"
+                id="submit_data_submission" method="post"
+                ref="instance('data-instance')" replace="none">
+                <idega:saveForm action="submissionComplete"
+                    ev:event="xforms-submit-done"
+                    instanceId="data-instance" submissionId="instance('data-instance')/saveFormData/submissionId"/>
+                <idega:toggle case="fbc_4" ev:event="xforms-submit-done"/>
+            </xf:submission>
+            
+            <xf:action ev:event="xforms-submit-error" id="submission-error">
+                <xf:dispatch name="idega-submit-error" target="idega-submission-error"/>
+            </xf:action>
+            <xf:action ev:event="idega-submit-error" id="idega-submission-error">
+                <xf:message level="modeless" ref="instance('localized_strings')/submission-error_message[@lang=instance('localized_strings')/current_language]"/>
+            </xf:action>
+            <xf:bind id="fbc_7_bind" nodeset="Kennitala_fbc_7"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:instance id="fbc_7_autofill-instance" relevant="false()" src="context:fb-afk-loginSession.user.personalID"/>
+            <xf:bind id="fbc_8_bind" nodeset="Trflag_fbc_8"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:bind id="fbc_14_bind" nodeset="Netfang_fbc_14"
+                readonly="instance('control-instance')/readonly = 'true'" type="fbc_14fb_email"/>
+            <xf:bind id="fbc_15_bind" nodeset="Pstnmer_fbc_15"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:instance id="fbc_15_autofill-instance"
+                relevant="false()" src="context:fb-afk-loginSession.user.usersMainAddress.postalCode.postalCode"/>
+            <xf:bind id="fbc_16_bind" nodeset="Borg_fbc_16"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:instance id="fbc_16_autofill-instance"
+                relevant="false()" src="context:fb-afk-loginSession.user.usersMainAddress.city"/>
+            <xf:bind id="fbc_17_bind" nodeset="Nafn_fbc_17"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:instance id="fbc_17_autofill-instance"
+                relevant="false()" src="context:fb-afk-loginSession.user.name"/>
+            <xf:bind id="fbc_18_bind" nodeset="Heimilisfang_fbc_18"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:instance id="fbc_18_autofill-instance"
+                relevant="false()" src="context:fb-afk-loginSession.user.usersMainAddress.streetAddress"/>
+            <xf:bind id="fbc_20_bind" nodeset="Kyn_fbc_20"
+                readonly="instance('control-instance')/readonly = 'true'"
+                required="instance('control-instance')/required = 'true'" type="xs:string"/>
+            <xf:bind id="fbc_23_bind" nodeset="Fingardagur_fbc_23"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:bind id="fbc_26_bind" nodeset="Skli__fbc_26"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:bind id="fbc_27_bind" nodeset="Bekkur_fbc_27"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:bind id="fbc_29_bind" nodeset="Skrnardagur_fbc_29"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:instance id="fbc_20_autofill-instance"
+                relevant="false()" src="context:fb-afk-example"/>
+            <xf:bind id="fbc_32_bind" nodeset="Kennitala_fbc_32"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:instance id="fbc_32_autofill-instance"
+                relevant="false()" src="context:fb-afk-loginSession.user.personalID"/>
+            <xf:bind id="fbc_33_bind" nodeset="Nafn_fbc_33"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:instance id="fbc_33_autofill-instance"
+                relevant="false()" src="context:fb-afk-loginSession.user.name"/>
+            <xf:bind id="fbc_35_bind" nodeset="Kennitala_fbc_35"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:instance id="fbc_35_autofill-instance"
+                relevant="false()" src="context:fb-afk-loginSession.user.personalID"/>
+            <xf:bind id="fbc_37_bind" nodeset="Nafn_fbc_37"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:instance id="fbc_37_autofill-instance"
+                relevant="false()" src="context:fb-afk-loginSession.user.name"/>
+            <xf:bind id="fbc_38_bind" nodeset="Heimilisfang_fbc_38"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:instance id="fbc_38_autofill-instance"
+                relevant="false()" src="context:fb-afk-loginSession.user.usersMainAddress.streetAddress"/>
+            <xf:bind id="fbc_39_bind" nodeset="Heimilisfang_fbc_39"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:instance id="fbc_39_autofill-instance"
+                relevant="false()" src="context:fb-afk-loginSession.user.usersMainAddress.streetAddress"/>
+            <xf:bind id="fbc_40_bind" nodeset="Pstnmer_fbc_40"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:instance id="fbc_40_autofill-instance"
+                relevant="false()" src="context:fb-afk-loginSession.user.usersMainAddress.postalCode.postalCode"/>
+            <xf:bind id="fbc_41_bind" nodeset="Pstnmer_fbc_41"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:instance id="fbc_41_autofill-instance"
+                relevant="false()" src="context:fb-afk-loginSession.user.usersMainAddress.postalCode.postalCode"/>
+            <xf:bind id="fbc_42_bind" nodeset="Borg_fbc_42"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:instance id="fbc_42_autofill-instance"
+                relevant="false()" src="context:fb-afk-loginSession.user.usersMainAddress.city"/>
+            <xf:bind id="fbc_43_bind" nodeset="Borg_fbc_43"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:instance id="fbc_43_autofill-instance"
+                relevant="false()" src="context:fb-afk-loginSession.user.usersMainAddress.city"/>
+            <xf:bind id="fbc_44_bind" nodeset="Netfang_fbc_44"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:instance id="fbc_44_autofill-instance"
+                relevant="false()" src="context:fb-afk-collection-string-loginSession.user.emails.emailAddress"/>
+            <xf:bind id="fbc_45_bind" nodeset="Netfng_fbc_45"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:instance id="fbc_45_autofill-instance"
+                relevant="false()" src="context:fb-afk-collection-string-loginSession.user.emails.emailAddress"/>
+            <xf:bind id="fbc_48_bind"
+                nodeset="Frekari_upplsingar__fbc_48"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:bind id="fbc_51_bind" nodeset="Smar_fbc_51"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:instance id="fbc_51_autofill-instance"
+                relevant="false()" src="context:fb-afk-collection-string-loginSession.user.phones.number"/>
+            <xf:bind id="fbc_52_bind" nodeset="Smar_fbc_52"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:instance id="fbc_52_autofill-instance"
+                relevant="false()" src="context:fb-afk-collection-string-loginSession.user.phones.number"/>
+            <xf:bind id="fbc_53_bind" nodeset="Smar_fbc_53"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:instance id="fbc_53_autofill-instance"
+                relevant="false()" src="context:fb-afk-collection-string-loginSession.user.phones.number"/>
+            <xf:bind id="fbc_54_bind" nodeset="Vinnusmi__fbc_54"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:instance id="fbc_54_autofill-instance"
+                relevant="false()" src="context:fb-afk-collection-string-loginSession.user.phones.number"/>
+            <xf:bind id="fbc_55_bind" nodeset="Vinnusmi__fbc_55"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:instance id="fbc_55_autofill-instance"
+                relevant="false()" src="context:fb-afk-collection-string-loginSession.user.phones.number"/>
+            <xf:bind id="fbc_56_bind" nodeset="Smar_fbc_56"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:instance id="fbc_56_autofill-instance"
+                relevant="false()" src="context:fb-afk-collection-string-loginSession.user.phones.number"/>
+            <xf:bind id="fbc_57_bind" nodeset="GSM_fbc_57"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:instance id="fbc_57_autofill-instance"
+                relevant="false()" src="context:fb-afk-collection-string-loginSession.user.phones.number"/>
+            <xf:bind id="fbc_58_bind"
+                nodeset="Tengsl_vi_fermingarbarn_fbc_58"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:bind id="fbc_59_bind"
+                nodeset="Tengsl_vi_fermingarbarn_fbc_59"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:bind id="fbc_60_bind" nodeset="Nafn_mur_fbc_60"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:bind id="fbc_61_bind" nodeset="Nafn_fur_fbc_61"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:bind id="fbc_62_bind" nodeset="Fermingardagur_fbc_62"
+                readonly="instance('control-instance')/readonly = 'true'"
+                required="instance('control-instance')/required = 'true'" type="xs:string"/>
+        </xf:model>
+        <xf:model id="data_model">
+            <xf:instance id="localized_strings" xmlns="">
+                <localized_strings>
+                    <default_language>is_IS</default_language>
+                    <current_language>en</current_language>
+                    <form-title lang="en">Register Child</form-title>
+                    <form-title lang="is_IS">Ferming</form-title>
+                    <page-1-label lang="en">Section 1 of 1</page-1-label>
+                    <page-1-label lang="is_IS">Skref 1 af 1</page-1-label>
+                    <page-2-label lang="en">Form submitted</page-2-label>
+                    <page-2-label lang="is_IS">Form sent</page-2-label>
+                    <page-1-submit_button-label lang="en">Submit</page-1-submit_button-label>
+                    <page-1-submit_button-label lang="is_IS">Senda</page-1-submit_button-label>
+                    <submission-error_message lang="en">Submission error. Please check your form!</submission-error_message>
+                    <submission-error_message lang="is_IS">Villa varð við að senda formið vinsamlegast athugið hvort stjörnumerktir reitir hafi allir verið útfylltir og að engar villur séu í forminu.</submission-error_message>
+                    <submission-success_message lang="en">Your form has been received. Thank you.</submission-success_message>
+                    <submission-success_message lang="is_IS">Formið hefur verið móttekið. Takk fyrir.</submission-success_message>
+                    <fbc_5-text lang="is_IS">Upplýsingar um fermingarbarn</fbc_5-text>
+                    <fbc_5-text lang="en">Information regarding person confirmed</fbc_5-text>
+                    <fbc_7-label lang="is_IS">Kennitala</fbc_7-label>
+                    <fbc_7-label lang="en">Personal id</fbc_7-label>
+                    <fbc_6-required lang="is_IS">Required</fbc_6-required>
+                    <fbc_6-required lang="en">Required</fbc_6-required>
+                    <fbc_8-label lang="is_IS">Trúfélag</fbc_8-label>
+                    <fbc_8-label lang="en">Religion</fbc_8-label>
+                    <fbc_14-label lang="is_IS">Netfang</fbc_14-label>
+                    <fbc_14-label lang="en">Email</fbc_14-label>
+                    <fbc_14-required lang="is_IS">Þessi reitur verður að vera útfylltur</fbc_14-required>
+                    <fbc_14-required lang="en">Email address can not be empty</fbc_14-required>
+                    <fbc_14-validation lang="is_IS">Netfang stenst ekki prófun</fbc_14-validation>
+                    <fbc_14-validation lang="en">Invalid email</fbc_14-validation>
+                    <fbc_15-label lang="is_IS">Póstnúmer</fbc_15-label>
+                    <fbc_15-label lang="en">Postal code</fbc_15-label>
+                    <fbc_16-label lang="is_IS">Borg</fbc_16-label>
+                    <fbc_16-label lang="en">City</fbc_16-label>
+                    <fbc_17-label lang="is_IS">Nafn</fbc_17-label>
+                    <fbc_17-label lang="en">Name</fbc_17-label>
+                    <fbc_18-label lang="is_IS">Heimilisfang</fbc_18-label>
+                    <fbc_18-label lang="en">Address</fbc_18-label>
+                    <fbc_20-label lang="is_IS">Kyn</fbc_20-label>
+                    <fbc_20-label lang="en">Gender </fbc_20-label>
+                    <fbc_20-required lang="is_IS">Gender must be selected!</fbc_20-required>
+                    <fbc_20-required lang="en">Gender must be selected!</fbc_20-required>
+                    <fbc_23-label lang="is_IS">Fæðingardagur</fbc_23-label>
+                    <fbc_23-label lang="en">Place of birth </fbc_23-label>
+                    <fbc_26-label lang="is_IS">Skóli </fbc_26-label>
+                    <fbc_26-label lang="en">School </fbc_26-label>
+                    <fbc_27-label lang="is_IS">Bekkur</fbc_27-label>
+                    <fbc_27-label lang="en">Class</fbc_27-label>
+                    <fbc_29-label lang="is_IS">Skírnardagur</fbc_29-label>
+                    <fbc_29-label lang="en">Date baptized</fbc_29-label>
+                    <fbc_31-text lang="is_IS">Aðstandandi / Tengiliður I </fbc_31-text>
+                    <fbc_31-text lang="en">Relative / Contact person I</fbc_31-text>
+                    <fbc_32-label lang="is_IS">Kennitala</fbc_32-label>
+                    <fbc_32-label lang="en">Personal id</fbc_32-label>
+                    <fbc_33-label lang="is_IS">Nafn</fbc_33-label>
+                    <fbc_33-label lang="en">Name</fbc_33-label>
+                    <fbc_34-text lang="is_IS">Aðstandandi / Tengiliður II</fbc_34-text>
+                    <fbc_34-text lang="en">Relative / Contact person II </fbc_34-text>
+                    <fbc_35-label lang="is_IS">Kennitala</fbc_35-label>
+                    <fbc_35-label lang="en">Personal id</fbc_35-label>
+                    <fbc_37-label lang="is_IS">Nafn</fbc_37-label>
+                    <fbc_37-label lang="en">Name</fbc_37-label>
+                    <fbc_38-label lang="is_IS">Heimilisfang</fbc_38-label>
+                    <fbc_38-label lang="en">Address</fbc_38-label>
+                    <fbc_39-label lang="is_IS">Heimilisfang</fbc_39-label>
+                    <fbc_39-label lang="en">Address</fbc_39-label>
+                    <fbc_40-label lang="is_IS">Póstnúmer</fbc_40-label>
+                    <fbc_40-label lang="en">Postal code</fbc_40-label>
+                    <fbc_41-label lang="is_IS">Póstnúmer</fbc_41-label>
+                    <fbc_41-label lang="en">Postal code</fbc_41-label>
+                    <fbc_42-label lang="is_IS">Borg</fbc_42-label>
+                    <fbc_42-label lang="en">City</fbc_42-label>
+                    <fbc_43-label lang="is_IS">Borg</fbc_43-label>
+                    <fbc_43-label lang="en">City</fbc_43-label>
+                    <fbc_44-label lang="is_IS">Netfang</fbc_44-label>
+                    <fbc_44-label lang="en">Emails</fbc_44-label>
+                    <fbc_45-label lang="is_IS">Netföng</fbc_45-label>
+                    <fbc_45-label lang="en">Emails</fbc_45-label>
+                    <fbc_48-label lang="is_IS">Frekari upplýsingar </fbc_48-label>
+                    <fbc_48-label lang="en">Comments</fbc_48-label>
+                    <fbc_51-label lang="is_IS">Símar</fbc_51-label>
+                    <fbc_51-label lang="en">Phones</fbc_51-label>
+                    <fbc_52-label lang="is_IS">Símar</fbc_52-label>
+                    <fbc_52-label lang="en">Home phone no</fbc_52-label>
+                    <fbc_53-label lang="is_IS">Símar</fbc_53-label>
+                    <fbc_53-label lang="en">Phones</fbc_53-label>
+                    <fbc_54-label lang="is_IS">Vinnusími </fbc_54-label>
+                    <fbc_54-label lang="en">Phones</fbc_54-label>
+                    <fbc_55-label lang="is_IS">Vinnusími </fbc_55-label>
+                    <fbc_55-label lang="en">Work phone no</fbc_55-label>
+                    <fbc_56-label lang="is_IS">Símar</fbc_56-label>
+                    <fbc_56-label lang="en">Phones</fbc_56-label>
+                    <fbc_57-label lang="is_IS">GSM</fbc_57-label>
+                    <fbc_57-label lang="en">GSM</fbc_57-label>
+                    <fbc_52-required lang="is_IS">Required</fbc_52-required>
+                    <fbc_52-required lang="en">Required</fbc_52-required>
+                    <fbc_58-label lang="is_IS">Tengsl við fermingarbarn</fbc_58-label>
+                    <fbc_58-label lang="en">Relation to child</fbc_58-label>
+                    <fbc_59-label lang="is_IS">Tengsl við fermingarbarn</fbc_59-label>
+                    <fbc_59-label lang="en">Relation to child</fbc_59-label>
+                    <fbc_29-help lang="is_IS">Upplýsingar um skírnardag er hægt að fá hjá Þjóðskrá -  Sími 569 2900</fbc_29-help>
+                    <fbc_60-label lang="is_IS">Nafn móður</fbc_60-label>
+                    <fbc_60-label lang="en">Mother's name</fbc_60-label>
+                    <fbc_61-label lang="is_IS">Nafn föður</fbc_61-label>
+                    <fbc_61-label lang="en">Father's name</fbc_61-label>
+                    <fbc_62-label lang="is_IS">Fermingardagur</fbc_62-label>
+                    <fbc_62-label lang="en">Confirmation date</fbc_62-label>
+                    <fbc_62-required lang="is_IS">Confirmation date must be selected!</fbc_62-required>
+                    <fbc_62-required lang="en">Confirmation date must be selected!</fbc_62-required>
+                </localized_strings>
+            </xf:instance>
+            <xf:instance id="locale-instance" relevant="false()" src="context:fb-afk-loginSession.currentLocale"/>
+            <xf:action ev:event="xforms-ready">
+                <idega:dispatch name="idega-xforms-ready" target="//h:body//*[starts-with(@id, 'fbc_')]"/>
+                <xf:setvalue model="data_model"
+                    ref="instance('localized_strings')/current_language" value="instance('locale-instance')/fb-afk-loginSession.currentLocale"/>
+                <xf:setvalue
+                    if="instance('control-instance')/generatePdf='true'"
+                    model="submission_model"
+                    ref="instance('control-instance')/required" value="'false'"/>
+            </xf:action>
+            <xf:instance id="fbc_8_lds" xmlns="">
+                <local_src>
+                    <localizedEntries lang="en">
+                        <item>
+                            <itemLabel>Þjóðkirkjan</itemLabel>
+                            <itemValue>Thjodkirkja</itemValue>
+                        </item>
+                        <item>
+                            <itemLabel>Annað </itemLabel>
+                            <itemValue>Annad</itemValue>
+                        </item>
+                    </localizedEntries>
+                    <localizedEntries lang="is_IS">
+                        <item>
+                            <itemLabel>Þjóðkirkjan </itemLabel>
+                            <itemValue>Thjodkirkja</itemValue>
+                        </item>
+                        <item>
+                            <itemLabel>Annað </itemLabel>
+                            <itemValue>Annad</itemValue>
+                        </item>
+                    </localizedEntries>
+                </local_src>
+            </xf:instance>
+            <xf:instance id="fbc_8_eds" xmlns="">
+                <ext_src/>
+            </xf:instance>
+            <xf:instance id="fbc_20_lds" xmlns="">
+                <local_src>
+                    <localizedEntries lang="en">
+                        <item>
+                            <itemLabel>Female</itemLabel>
+                            <itemValue>Female</itemValue>
+                        </item>
+                        <item>
+                            <itemLabel>Male</itemLabel>
+                            <itemValue>Male</itemValue>
+                        </item>
+                    </localizedEntries>
+                    <localizedEntries lang="is_IS">
+                        <item>
+                            <itemLabel>Stúlka</itemLabel>
+                            <itemValue>Female</itemValue>
+                        </item>
+                        <item>
+                            <itemLabel>Drengur</itemLabel>
+                            <itemValue>Male</itemValue>
+                        </item>
+                    </localizedEntries>
+                </local_src>
+            </xf:instance>
+            <xf:instance id="fbc_20_eds" xmlns="">
+                <ext_src/>
+            </xf:instance>
+            <xf:instance id="fbc_26_lds" xmlns="">
+                <local_src>
+                    <localizedEntries lang="en">
+                        <item>
+                            <itemLabel>Garðaskóli</itemLabel>
+                            <itemValue>Gardaskóli</itemValue>
+                        </item>
+                        <item>
+                            <itemLabel>Álftanesskóli</itemLabel>
+                            <itemValue>Alftanesskoli</itemValue>
+                        </item>
+                        <item>
+                            <itemLabel>Annað</itemLabel>
+                            <itemValue>Annad</itemValue>
+                        </item>
+                    </localizedEntries>
+                    <localizedEntries lang="is_IS">
+                        <item>
+                            <itemLabel>Garðaskóli</itemLabel>
+                            <itemValue>Gardaskóli</itemValue>
+                        </item>
+                        <item>
+                            <itemLabel>Alftanesskoli</itemLabel>
+                            <itemValue>Alftanesskoli</itemValue>
+                        </item>
+                        <item>
+                            <itemLabel>Annað</itemLabel>
+                            <itemValue>Annad</itemValue>
+                        </item>
+                    </localizedEntries>
+                </local_src>
+            </xf:instance>
+            <xf:instance id="fbc_26_eds" xmlns="">
+                <ext_src/>
+            </xf:instance>
+            <xf:instance id="fbc_58_lds" xmlns="">
+                <local_src>
+                    <localizedEntries lang="en">
+                        <item>
+                            <itemLabel>Mother</itemLabel>
+                            <itemValue>Mother</itemValue>
+                        </item>
+                        <item>
+                            <itemLabel>Father</itemLabel>
+                            <itemValue>Father</itemValue>
+                        </item>
+                        <item>
+                            <itemLabel>Custodian</itemLabel>
+                            <itemValue>Custodian</itemValue>
+                        </item>
+                        <item>
+                            <itemLabel>Other</itemLabel>
+                            <itemValue>Other</itemValue>
+                        </item>
+                    </localizedEntries>
+                    <localizedEntries lang="is_IS">
+                        <item>
+                            <itemLabel>Móðir</itemLabel>
+                            <itemValue>Mother</itemValue>
+                        </item>
+                        <item>
+                            <itemLabel>Faðir</itemLabel>
+                            <itemValue>Father</itemValue>
+                        </item>
+                        <item>
+                            <itemLabel>Forráðamaður</itemLabel>
+                            <itemValue>Custodian</itemValue>
+                        </item>
+                        <item>
+                            <itemLabel>Annað</itemLabel>
+                            <itemValue>Other</itemValue>
+                        </item>
+                    </localizedEntries>
+                </local_src>
+            </xf:instance>
+            <xf:instance id="fbc_58_eds" xmlns="">
+                <ext_src/>
+            </xf:instance>
+            <xf:instance id="fbc_59_eds" xmlns="">
+                <ext_src/>
+            </xf:instance>
+            <xf:instance id="fbc_62_lds" xmlns="">
+                <local_src/>
+            </xf:instance>
+            <xf:instance id="fbc_62_eds" xmlns="" src="expXml:churchCoursesHelper.availableCourses">
+                <ext_src />
+            </xf:instance>
+        </xf:model>
+        <xs:schema id="fb-schema">
+            <xs:simpleType name="fbc_14fb_email">
+                <xs:restriction base="xs:string">
+                    <xs:pattern value="[A-Za-z0-9!#-'\*\+\-/=\?\^_`\{-~]+(\.[A-Za-z0-9!#-'\*\+\-/=\?\^_`\{-~]+)*@[A-Za-z0-9!#-'\*\+\-/=\?\^_`\{-~]+(\.[A-Za-z0-9!#-'\*\+\-/=\?\^_`\{-~]+)*"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:schema>
+        <xf:model id="x-autofill-model">
+            <xf:action ev:event="xforms-ready">
+                <xf:setvalue bind="fbc_7_bind"
+                    id="fbc_7-autofill-setvalue"
+                    model="submission_model" value="instance('fbc_7_autofill-instance')/fb-afk-loginSession.user.personalID"/>
+            </xf:action>
+            <xf:setvalue bind="fbc_15_bind"
+                id="fbc_15-autofill-setvalue" model="submission_model" value="instance('fbc_15_autofill-instance')/fb-afk-loginSession.user.usersMainAddress.postalCode.postalCode"/>
+            <xf:setvalue bind="fbc_16_bind"
+                id="fbc_16-autofill-setvalue" model="submission_model" value="instance('fbc_16_autofill-instance')/fb-afk-loginSession.user.usersMainAddress.city"/>
+            <xf:setvalue bind="fbc_17_bind"
+                id="fbc_17-autofill-setvalue" model="submission_model" value="instance('fbc_17_autofill-instance')/fb-afk-loginSession.user.name"/>
+            <xf:setvalue bind="fbc_18_bind"
+                id="fbc_18-autofill-setvalue" model="submission_model" value="instance('fbc_18_autofill-instance')/fb-afk-loginSession.user.usersMainAddress.streetAddress"/>
+            <xf:setvalue bind="fbc_20_bind"
+                id="fbc_20-autofill-setvalue" model="submission_model" value="instance('fbc_20_autofill-instance')/fb-afk-example"/>
+            <xf:setvalue bind="fbc_32_bind"
+                id="fbc_32-autofill-setvalue" model="submission_model" value="instance('fbc_32_autofill-instance')/fb-afk-loginSession.user.personalID"/>
+            <xf:setvalue bind="fbc_33_bind"
+                id="fbc_33-autofill-setvalue" model="submission_model" value="instance('fbc_33_autofill-instance')/fb-afk-loginSession.user.name"/>
+            <xf:setvalue bind="fbc_35_bind"
+                id="fbc_35-autofill-setvalue" model="submission_model" value="instance('fbc_35_autofill-instance')/fb-afk-loginSession.user.personalID"/>
+            <xf:setvalue bind="fbc_37_bind"
+                id="fbc_37-autofill-setvalue" model="submission_model" value="instance('fbc_37_autofill-instance')/fb-afk-loginSession.user.name"/>
+            <xf:setvalue bind="fbc_38_bind"
+                id="fbc_38-autofill-setvalue" model="submission_model" value="instance('fbc_38_autofill-instance')/fb-afk-loginSession.user.usersMainAddress.streetAddress"/>
+            <xf:setvalue bind="fbc_39_bind"
+                id="fbc_39-autofill-setvalue" model="submission_model" value="instance('fbc_39_autofill-instance')/fb-afk-loginSession.user.usersMainAddress.streetAddress"/>
+            <xf:setvalue bind="fbc_40_bind"
+                id="fbc_40-autofill-setvalue" model="submission_model" value="instance('fbc_40_autofill-instance')/fb-afk-loginSession.user.usersMainAddress.postalCode.postalCode"/>
+            <xf:setvalue bind="fbc_41_bind"
+                id="fbc_41-autofill-setvalue" model="submission_model" value="instance('fbc_41_autofill-instance')/fb-afk-loginSession.user.usersMainAddress.postalCode.postalCode"/>
+            <xf:setvalue bind="fbc_42_bind"
+                id="fbc_42-autofill-setvalue" model="submission_model" value="instance('fbc_42_autofill-instance')/fb-afk-loginSession.user.usersMainAddress.city"/>
+            <xf:setvalue bind="fbc_43_bind"
+                id="fbc_43-autofill-setvalue" model="submission_model" value="instance('fbc_43_autofill-instance')/fb-afk-loginSession.user.usersMainAddress.city"/>
+            <xf:setvalue bind="fbc_44_bind"
+                id="fbc_44-autofill-setvalue" model="submission_model" value="instance('fbc_44_autofill-instance')/fb-afk-collection-string-loginSession.user.emails.emailAddress"/>
+            <xf:setvalue bind="fbc_45_bind"
+                id="fbc_45-autofill-setvalue" model="submission_model" value="instance('fbc_45_autofill-instance')/fb-afk-collection-string-loginSession.user.emails.emailAddress"/>
+            <xf:setvalue bind="fbc_51_bind"
+                id="fbc_51-autofill-setvalue" model="submission_model" value="instance('fbc_51_autofill-instance')/fb-afk-collection-string-loginSession.user.phones.number"/>
+            <xf:setvalue bind="fbc_52_bind"
+                id="fbc_52-autofill-setvalue" model="submission_model" value="instance('fbc_52_autofill-instance')/fb-afk-collection-string-loginSession.user.phones.number"/>
+            <xf:setvalue bind="fbc_53_bind"
+                id="fbc_53-autofill-setvalue" model="submission_model" value="instance('fbc_53_autofill-instance')/fb-afk-collection-string-loginSession.user.phones.number"/>
+            <xf:setvalue bind="fbc_54_bind"
+                id="fbc_54-autofill-setvalue" model="submission_model" value="instance('fbc_54_autofill-instance')/fb-afk-collection-string-loginSession.user.phones.number"/>
+            <xf:setvalue bind="fbc_55_bind"
+                id="fbc_55-autofill-setvalue" model="submission_model" value="instance('fbc_55_autofill-instance')/fb-afk-collection-string-loginSession.user.phones.number"/>
+            <xf:setvalue bind="fbc_56_bind"
+                id="fbc_56-autofill-setvalue" model="submission_model" value="instance('fbc_56_autofill-instance')/fb-afk-collection-string-loginSession.user.phones.number"/>
+            <xf:setvalue bind="fbc_57_bind"
+                id="fbc_57-autofill-setvalue" model="submission_model" value="instance('fbc_57_autofill-instance')/fb-afk-collection-string-loginSession.user.phones.number"/>
+        </xf:model>
+    </head>
+    <body>
+        <xf:group appearance="full">
+            <xf:group bind="errorsGroup" class="xformErrors">
+                <xf:repeat bind="errors">
+                    <xf:output ref="."/>
+                </xf:repeat>
+            </xf:group>
+            <idega:setError ev:event="idega-validation-error"
+                id="formSetErrorHandler" ref="instance('error-instance')/error"/>
+            <idega:switch>
+                <idega:case id="fbc_1" show="instance('control-instance')/generatePdf='true'">
+                    <xf:group appearance="full">
+                        <xf:label model="data_model" ref="instance('localized_strings')/page-1-label[@lang=instance('localized_strings')/current_language]"/>
+                        <div class="fbc_header_text" id="fbc_5" type="fbc_header_text">
+                            <xf:output model="data_model" ref="instance('localized_strings')/fbc_5-text[@lang=instance('localized_strings')/current_language]"/>
+                        </div>
+                        <xf:input bind="fbc_17_bind" id="fbc_17">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_17-label[@lang=instance('localized_strings')/current_language]"/>
+                        </xf:input>
+                        <xf:input bind="fbc_7_bind" id="fbc_7">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_7-label[@lang=instance('localized_strings')/current_language]"/>
+                        </xf:input>
+                        <xf:input bind="fbc_18_bind" id="fbc_18">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_18-label[@lang=instance('localized_strings')/current_language]"/>
+                        </xf:input>
+                        <xf:input bind="fbc_15_bind" id="fbc_15">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_15-label[@lang=instance('localized_strings')/current_language]"/>
+                        </xf:input>
+                        <xf:input bind="fbc_16_bind" id="fbc_16">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_16-label[@lang=instance('localized_strings')/current_language]"/>
+                        </xf:input>
+                        <xf:input bind="fbc_53_bind" id="fbc_53">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_53-label[@lang=instance('localized_strings')/current_language]"/>
+                        </xf:input>
+                        <xf:input bind="fbc_14_bind" id="fbc_14">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_14-label[@lang=instance('localized_strings')/current_language]"/>
+                            <xf:dispatch ev:event="idega-xforms-ready"
+                                name="idega-validate" target="fbc_14"/>
+                            <xf:dispatch ev:event="xforms-value-changed"
+                                name="idega-validate" target="fbc_14"/>
+                            <idega:validator ev:event="idega-validate">
+                                <idega:message errorType="required"
+                                    model="data_model" value="instance('localized_strings')/fbc_14-required[@lang=instance('localized_strings')/current_language]"/>
+                                <idega:message errorType="validation"
+                                    model="data_model" value="instance('localized_strings')/fbc_14-validation[@lang=instance('localized_strings')/current_language]"/>
+                            </idega:validator>
+                            <xf:alert ref="instance('error-instance')/error[@for='fbc_14']"/>
+                        </xf:input>
+                        <hr class="fbc_separator" id="fbc_24" type="fbc_separator"/>
+                        <xf:select1 appearance="full" bind="fbc_20_bind" id="fbc_20">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_20-label[@lang=instance('localized_strings')/current_language]"/>
+                            <xf:itemset model="data_model" nodeset="instance('fbc_20_lds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item">
+                                <xf:label ref="itemLabel"/>
+                                <xf:value ref="itemValue"/>
+                            </xf:itemset>
+                            <xf:dispatch ev:event="idega-xforms-ready"
+                                name="idega-validate" target="fbc_20"/>
+                            <xf:dispatch ev:event="xforms-value-changed"
+                                name="idega-validate" target="fbc_20"/>
+                            <idega:validator ev:event="idega-validate">
+                                <idega:message errorType="required"
+                                    model="data_model" value="instance('localized_strings')/fbc_20-required[@lang=instance('localized_strings')/current_language]"/>
+                            </idega:validator>
+                            <xf:alert ref="instance('error-instance')/error[@for='fbc_20']"/>
+                        </xf:select1>
+                        <xf:select1 appearance="minimal"
+                            bind="fbc_8_bind" id="fbc_8">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_8-label[@lang=instance('localized_strings')/current_language]"/>
+                            <xf:itemset model="data_model" nodeset="instance('fbc_8_lds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item">
+                                <xf:label ref="itemLabel"/>
+                                <xf:value ref="itemValue"/>
+                            </xf:itemset>
+                        </xf:select1>
+                        <xf:input bind="fbc_29_bind" id="fbc_29">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_29-label[@lang=instance('localized_strings')/current_language]"/>
+                            <xf:help>
+                                <xf:output ref="instance('localized_strings')/fbc_29-help[@lang=instance('localized_strings')/current_language]"/>
+                            </xf:help>
+                        </xf:input>
+                        <xf:input bind="fbc_23_bind" id="fbc_23">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_23-label[@lang=instance('localized_strings')/current_language]"/>
+                        </xf:input>
+                        <xf:input bind="fbc_60_bind" id="fbc_60" type="fbc_text">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_60-label[@lang=instance('localized_strings')/current_language]"/>
+                        </xf:input>
+                        <xf:input bind="fbc_61_bind" id="fbc_61" type="fbc_text">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_61-label[@lang=instance('localized_strings')/current_language]"/>
+                        </xf:input>
+                        <xf:select1 appearance="minimal"
+                            bind="fbc_62_bind" id="fbc_62" type="fbc_single_select_minimal">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_62-label[@lang=instance('localized_strings')/current_language]"/>
+                            <xf:itemset model="data_model" nodeset="instance('fbc_62_eds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item">
+                                <xf:label ref="itemLabel"/>
+                                <xf:value ref="itemValue"/>
+                            </xf:itemset>
+                            <xf:dispatch ev:event="idega-xforms-ready"
+                                name="idega-validate" target="fbc_62"/>
+                            <xf:dispatch ev:event="xforms-value-changed"
+                                name="idega-validate" target="fbc_62"/>
+                            <idega:validator ev:event="idega-validate">
+                                <idega:message errorType="required"
+                                    model="data_model" value="instance('localized_strings')/fbc_62-required[@lang=instance('localized_strings')/current_language]"/>
+                            </idega:validator>
+                            <xf:alert ref="instance('error-instance')/error[@for='fbc_62']"/>
+                        </xf:select1>
+                        <xf:select1 appearance="minimal"
+                            bind="fbc_26_bind" id="fbc_26">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_26-label[@lang=instance('localized_strings')/current_language]"/>
+                            <xf:itemset model="data_model" nodeset="instance('fbc_26_lds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item">
+                                <xf:label ref="itemLabel"/>
+                                <xf:value ref="itemValue"/>
+                            </xf:itemset>
+                        </xf:select1>
+                        <xf:input bind="fbc_27_bind" id="fbc_27">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_27-label[@lang=instance('localized_strings')/current_language]"/>
+                        </xf:input>
+                        <hr class="fbc_separator" id="fbc_28" type="fbc_separator"/>
+                        <div class="fbc_header_text" id="fbc_31" type="fbc_header_text">
+                            <xf:output model="data_model" ref="instance('localized_strings')/fbc_31-text[@lang=instance('localized_strings')/current_language]"/>
+                        </div>
+                        <xf:input bind="fbc_32_bind" id="fbc_32">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_32-label[@lang=instance('localized_strings')/current_language]"/>
+                        </xf:input>
+                        <xf:input bind="fbc_33_bind" id="fbc_33">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_33-label[@lang=instance('localized_strings')/current_language]"/>
+                        </xf:input>
+                        <xf:input bind="fbc_38_bind" id="fbc_38">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_38-label[@lang=instance('localized_strings')/current_language]"/>
+                        </xf:input>
+                        <xf:input bind="fbc_40_bind" id="fbc_40">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_40-label[@lang=instance('localized_strings')/current_language]"/>
+                        </xf:input>
+                        <xf:input bind="fbc_42_bind" id="fbc_42">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_42-label[@lang=instance('localized_strings')/current_language]"/>
+                        </xf:input>
+                        <xf:input bind="fbc_44_bind" id="fbc_44">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_44-label[@lang=instance('localized_strings')/current_language]"/>
+                        </xf:input>
+                        <xf:input bind="fbc_52_bind" id="fbc_52">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_52-label[@lang=instance('localized_strings')/current_language]"/>
+                            <xf:dispatch ev:event="idega-xforms-ready"
+                                name="idega-validate" target="fbc_52"/>
+                            <xf:dispatch ev:event="xforms-value-changed"
+                                name="idega-validate" target="fbc_52"/>
+                            <idega:validator ev:event="idega-validate">
+                                <idega:message errorType="required"
+                                    model="data_model" value="instance('localized_strings')/fbc_52-required[@lang=instance('localized_strings')/current_language]"/>
+                            </idega:validator>
+                            <xf:alert ref="instance('error-instance')/error[@for='fbc_52']"/>
+                        </xf:input>
+                        <xf:input bind="fbc_57_bind" id="fbc_57">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_57-label[@lang=instance('localized_strings')/current_language]"/>
+                        </xf:input>
+                        <xf:input bind="fbc_55_bind" id="fbc_55">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_55-label[@lang=instance('localized_strings')/current_language]"/>
+                        </xf:input>
+                        <xf:select1 appearance="minimal"
+                            bind="fbc_58_bind" id="fbc_58">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_58-label[@lang=instance('localized_strings')/current_language]"/>
+                            <xf:itemset model="data_model" nodeset="instance('fbc_58_lds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item">
+                                <xf:label ref="itemLabel"/>
+                                <xf:value ref="itemValue"/>
+                            </xf:itemset>
+                        </xf:select1>
+                        <div class="fbc_header_text" id="fbc_34" type="fbc_header_text">
+                            <xf:output model="data_model" ref="instance('localized_strings')/fbc_34-text[@lang=instance('localized_strings')/current_language]"/>
+                        </div>
+                        <xf:input bind="fbc_35_bind" id="fbc_35">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_35-label[@lang=instance('localized_strings')/current_language]"/>
+                        </xf:input>
+                        <xf:input bind="fbc_37_bind" id="fbc_37">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_37-label[@lang=instance('localized_strings')/current_language]"/>
+                        </xf:input>
+                        <xf:input bind="fbc_39_bind" id="fbc_39">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_39-label[@lang=instance('localized_strings')/current_language]"/>
+                        </xf:input>
+                        <xf:input bind="fbc_41_bind" id="fbc_41">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_41-label[@lang=instance('localized_strings')/current_language]"/>
+                        </xf:input>
+                        <xf:input bind="fbc_43_bind" id="fbc_43">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_43-label[@lang=instance('localized_strings')/current_language]"/>
+                        </xf:input>
+                        <xf:input bind="fbc_45_bind" id="fbc_45">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_45-label[@lang=instance('localized_strings')/current_language]"/>
+                        </xf:input>
+                        <xf:input bind="fbc_51_bind" id="fbc_51">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_51-label[@lang=instance('localized_strings')/current_language]"/>
+                        </xf:input>
+                        <xf:input bind="fbc_56_bind" id="fbc_56">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_56-label[@lang=instance('localized_strings')/current_language]"/>
+                        </xf:input>
+                        <xf:input bind="fbc_54_bind" id="fbc_54">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_54-label[@lang=instance('localized_strings')/current_language]"/>
+                        </xf:input>
+                        <xf:select1 appearance="minimal"
+                            bind="fbc_59_bind" id="fbc_59">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_59-label[@lang=instance('localized_strings')/current_language]"/>
+                            <xf:itemset model="data_model" nodeset="instance('fbc_59_lds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item">
+                                <xf:label ref="itemLabel"/>
+                                <xf:value ref="itemValue"/>
+                            </xf:itemset>
+                        </xf:select1>
+                        <hr class="fbc_separator" id="fbc_49" type="fbc_separator"/>
+                        <xf:textarea bind="fbc_48_bind" id="fbc_48">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_48-label[@lang=instance('localized_strings')/current_language]"/>
+                        </xf:textarea>
+                        <div class="fbc_button_area" id="fbc_2" type="fbc_button_area">
+                            <xf:trigger bind="bind-submissionButton"
+                                class="fbc_button_submit" id="fbc_3" type="fbc_button_submit">
+                                <xf:label model="data_model" ref="instance('localized_strings')/page-1-submit_button-label[@lang=instance('localized_strings')/current_language]"/>
+                                <xf:action ev:event="DOMActivate">
+                                    <xf:setvalue
+                                    ref="instance('control-instance')/submission" value="'true'"/>
+                                    <idega:dispatch
+                                    name="idega-validate" target="//h:body//*[starts-with(@id, 'fbc_')]"/>
+                                    <xf:dispatch name="xforms-rebuild" target="data_model"/>
+                                    <xf:dispatch
+                                    name="xforms-recalculate" target="data_model"/>
+                                    <xf:dispatch
+                                    name="xforms-revalidate" target="data_model"/>
+                                    <xf:dispatch name="xforms-refresh" target="data_model"/>
+                                    <xf:action if="count-non-empty(instance('error-instance')/error)=0">
+                                    <xf:send submission="submit_data_submission"/>
+                                    </xf:action>
+                                    <xf:dispatch
+                                    if="count-non-empty(instance('error-instance')/error)!=0"
+                                    name="idega-submit-error" target="idega-submission-error"/>
+                                </xf:action>
+                            </xf:trigger>
+                        </div>
+                    </xf:group>
+                </idega:case>
+                <idega:case id="fbc_4" type="thx_page">
+                    <xf:group appearance="full" class="thx_page">
+                        <xf:label model="data_model" ref="instance('localized_strings')/page-2-label[@lang=instance('localized_strings')/current_language]"/>
+                        <xf:output model="data_model" ref="instance('localized_strings')/submission-success_message[@lang=instance('localized_strings')/current_language]"/>
+                    </xf:group>
+                </idega:case>
+            </idega:switch>
+        </xf:group>
+    </body>
+</html>
