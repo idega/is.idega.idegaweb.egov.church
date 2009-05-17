@@ -401,7 +401,7 @@ public class ChurchCourseApplication extends ApplicationForm {
 
 				cell = row.createCell();
 				cell.setStyleClass("column3");
-				cell.add(new Text(course.getFirstDateOfCourse().getDateString("hh:mm")));
+				cell.add(new Text(course.getFirstDateOfCourse().getDateString("HH:mm")));
 			}
 		}
 
