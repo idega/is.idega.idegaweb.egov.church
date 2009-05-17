@@ -1,0 +1,87 @@
+#course_step_1 div.info  {
+	padding-top: 0px;
+	padding-bottom: 13px;
+	height: 105px;
+}
+
+.courses {
+	width: 542px;
+}
+
+.courses thead tr th, .courses tfoot tr td {
+	font-weight: bold;
+	padding-left: 4px;
+	text-align: left;
+	font-size: 11px;
+}
+
+.courses tbody tr td {
+	padding: 2px 4px;
+	font-size: 11px;
+	vertical-align: middle;
+	line-height: 12px;
+	height: auto;
+}
+
+.choices thead tr th, .choices tfoot tr td {
+	font-weight: bold;
+	padding-left: 4px;
+	text-align: left;
+	font-size: 11px;
+}
+
+.choices tbody tr td {
+	padding: 2px 4px;
+	font-size: 11px;
+	vertical-align: middle;
+	line-height: 12px;
+	height: auto;
+}
+
+.choices {
+	width: 100%;
+}
+
+.courses .column0 {
+	width: 12px;
+}
+
+#prm_cou_course_table .column0 .checkbox{
+	width: 12px;
+	height: 12px;
+	margin: 0;
+	display: inline;
+	float: none;
+}
+
+.formItem.formItemBig {
+	width: auto;
+}
+
+.formItem.formItemBig select {
+	width: 65px;
+	margin: 0;
+	font-size: 10px;
+}
+
+.formItem.formItemBig select.dayCare {
+	width: 125px;
+}
+
+.courses.coursesPhaseSix .column0 {
+	width: auto;
+}
+
+.courses.coursesPhaseSix .column4, .courses.coursesPhaseSix .column5{
+	width: 50px;
+}
+
+table tbody tr.isfull td {
+	color: #a0a0a0;
+	text-decoration: line-through;
+}
+
+p.infoHelp {
+	margin: 0;
+	padding-top: 13px;
+}

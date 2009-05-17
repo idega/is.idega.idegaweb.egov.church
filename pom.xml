@@ -47,6 +47,10 @@
   		<groupId>com.idega.block.egov</groupId>
   		<artifactId>is.idega.idegaweb.egov.course</artifactId>
   	</dependency>
+  	<dependency>
+  		<groupId>com.idega.block.egov</groupId>
+  		<artifactId>is.idega.idegaweb.egov.application</artifactId>
+  	</dependency>
   </dependencies>
   
 </project>
