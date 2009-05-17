@@ -33,7 +33,6 @@ import com.idega.presentation.ui.Label;
 import com.idega.presentation.ui.RadioButton;
 import com.idega.presentation.ui.TextArea;
 import com.idega.presentation.ui.TextInput;
-import com.idega.user.data.Gender;
 import com.idega.util.IWTimestamp;
 import com.idega.util.PresentationUtil;
 
@@ -196,6 +195,8 @@ public class ChurchCourseApplication extends ApplicationForm {
 			formItem.setStyleClass("formItem");
 			formItem.add(new Text("Set the parameters for the form"));
 
+			add(form);
+			
 			return;
 		}
 
@@ -221,10 +222,12 @@ public class ChurchCourseApplication extends ApplicationForm {
 		TextInput childEmail = new TextInput(PARAMETER_CHILD_EMAIL);
 		
 		DropdownMenu childGender = new DropdownMenu(PARAMETER_CHILD_GENDER);
+		childGender.addMenuElement(-1, this.iwrb.getLocalizedString("child.select_gender", "Please select gender"));
 		childGender.addMenuElement(0, this.iwrb.getLocalizedString("child.male", "Male"));
 		childGender.addMenuElement(1, this.iwrb.getLocalizedString("child.female", "Female"));
 		
 		DropdownMenu childReligion = new DropdownMenu(PARAMETER_CHILD_RELIGION);
+		childReligion.addMenuElement(-1, this.iwrb.getLocalizedString("religion.select_religion", "Please select religion"));
 		childReligion.addMenuElement(0, this.iwrb.getLocalizedString("religion.national_church", "National church"));
 		childReligion.addMenuElement(1, this.iwrb.getLocalizedString("religion.other", "Other"));
 
@@ -236,6 +239,7 @@ public class ChurchCourseApplication extends ApplicationForm {
 		TextInput fathersName = new TextInput(PARAMETER_FATHERS_NAME);
 
 		DropdownMenu childSchool = new SchoolDropdown(PARAMETER_CHILD_SCHOOL, dropdownSchoolTypePK.intValue());
+		childSchool.addMenuElementFirst("-1", this.iwrb.getLocalizedString("child.select_school", "Please select school"));
 		
 		Layer formItem = new Layer(Layer.DIV);
 		formItem.setStyleClass("formItem");
@@ -441,6 +445,7 @@ public class ChurchCourseApplication extends ApplicationForm {
 		TextInput contact1WorkPhone = new TextInput(PARAMETER_CONTACT1_WORK_PHONE);
 
 		DropdownMenu contact1Relation = new DropdownMenu(PARAMETER_CONTACT1_RELATION);
+		contact1Relation.addMenuElement(-1, this.iwrb.getLocalizedString("rel.select_relation", "Please select relation"));
 		contact1Relation.addMenuElement(0, this.iwrb.getLocalizedString("rel.mother", "Mother"));
 		contact1Relation.addMenuElement(1, this.iwrb.getLocalizedString("rel.father", "Father"));
 		contact1Relation.addMenuElement(2, this.iwrb.getLocalizedString("rel.guardian", "Guardian"));
@@ -559,6 +564,7 @@ public class ChurchCourseApplication extends ApplicationForm {
 		TextInput contact2WorkPhone = new TextInput(PARAMETER_CONTACT2_WORK_PHONE);
 
 		DropdownMenu contact2Relation = new DropdownMenu(PARAMETER_CONTACT2_RELATION);
+		contact2Relation.addMenuElement(-1, this.iwrb.getLocalizedString("rel.select_relation", "Please select relation"));
 		contact2Relation.addMenuElement(0, this.iwrb.getLocalizedString("rel.mother", "Mother"));
 		contact2Relation.addMenuElement(1, this.iwrb.getLocalizedString("rel.father", "Father"));
 		contact2Relation.addMenuElement(2, this.iwrb.getLocalizedString("rel.guardian", "Guardian"));
