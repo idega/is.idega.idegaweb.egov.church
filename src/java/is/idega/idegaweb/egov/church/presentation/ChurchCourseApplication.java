@@ -278,10 +278,14 @@ public class ChurchCourseApplication extends ApplicationForm {
 				"religion.other", "Other"));
 		childReligion.keepStatusOnAction(true);
 
+		IWTimestamp stamp = new IWTimestamp();
+		stamp.addYears(-13);
+		
 		IWDatePicker childChristeningDate = new IWDatePicker(
 				PARAMETER_CHILD_CHRISTENING_DATE);
 		childChristeningDate.setShowYearChange(true);
 		childChristeningDate.keepStatusOnAction(true);
+		childChristeningDate.setDate(stamp.getDate());
 
 		TextInput mothersName = new TextInput(PARAMETER_MOTHERS_NAME);
 		mothersName.keepStatusOnAction(true);
@@ -818,7 +822,6 @@ public class ChurchCourseApplication extends ApplicationForm {
 
 		formItem = new Layer(Layer.DIV);
 		formItem.setStyleClass("formItem");
-		formItem.setStyleClass("required");
 		label = new Label(new Span(new Text(this.iwrb.getLocalizedString(
 				"other_info", "Other info"))), otherInfo);
 		formItem.add(label);
