@@ -1,5 +1,6 @@
 package is.idega.idegaweb.egov.church.presentation;
 
+import is.idega.block.family.business.FamilyConstants;
 import is.idega.idegaweb.egov.application.presentation.ApplicationForm;
 import is.idega.idegaweb.egov.church.data.ChurchCourseApplicationInfo;
 import is.idega.idegaweb.egov.church.data.ChurchCourseApplicationInfoHome;
@@ -10,8 +11,8 @@ import is.idega.idegaweb.egov.course.business.CourseDWR;
 import is.idega.idegaweb.egov.course.data.ApplicationHolder;
 import is.idega.idegaweb.egov.course.data.Course;
 import is.idega.idegaweb.egov.course.data.CourseApplication;
-
-import is.idega.block.family.business.FamilyConstants;
+import is.idega.idegaweb.egov.course.data.CourseChoice;
+import is.idega.idegaweb.egov.course.presentation.CourseBlock;
 
 import java.rmi.RemoteException;
 import java.util.Collection;
@@ -54,85 +55,55 @@ import com.idega.util.PresentationUtil;
 import com.idega.util.text.SocialSecurityNumber;
 
 public class ChurchCourseApplication extends ApplicationForm {
+	
 	private static final String BUNDLE_IDENTIFIER = "is.idega.idegaweb.egov.church";
 
 	private static final int ACTION_PHASE_1 = 1;
 	private static final int ACTION_SAVE = 0;
 
+	public static final String PARAMETER_APPLICATION_PK = CourseBlock.PARAMETER_CHOICE_PK;
+
 	protected static final String PARAMETER_ACTION = "prm_action";
 
 	private static final String PARAMETER_COURSE_TABLE_ID = "prm_cou_course_table";
 	private static final String PARAMETER_COURSE = "prm_cou_course";
-
 	private static final String PARAMETER_CHILD_NAME = "prm_child_name";
-
 	private static final String PARAMETER_CHILD_PERSONAL_ID = "prm_child_personal_id";
-
 	private static final String PARAMETER_CHILD_HOME = "prm_child_home";
-
 	private static final String PARAMETER_CHILD_PO = "prm_child_po";
-
 	private static final String PARAMETER_CHILD_PLACE = "prm_child_place";
-
 	private static final String PARAMETER_CHILD_MOBILE = "prm_child_mobile";
-
 	private static final String PARAMETER_CHILD_EMAIL = "prm_child_email";
-
 	private static final String PARAMETER_CHILD_CHRISTENING_DATE = "prm_child_christening_date";
-
 	private static final String PARAMETER_MOTHERS_NAME = "prm_mothers_name";
-
 	private static final String PARAMETER_FATHERS_NAME = "prm_fathers_name";
-
 	private static final String PARAMETER_CHILD_GENDER = "prm_child_gender";
-
 	private static final String PARAMETER_CHILD_RELIGION = "prm_child_religion";
-
 	private static final String PARAMETER_CHILD_SCHOOL = "prm_child_school";
-
 	private static final String PARAMETER_CONTACT1_NAME = "prm_contact1_name";
-
 	private static final String PARAMETER_CONTACT1_PERSONAL_ID = "prm_contact1_personal_id";
-
 	private static final String PARAMETER_CONTACT1_HOME = "prm_contact1_home";
-
 	private static final String PARAMETER_CONTACT1_PO = "prm_contact1_po";
-
 	private static final String PARAMETER_CONTACT1_PLACE = "prm_contact1_place";
-
 	private static final String PARAMETER_CONTACT1_MOBILE = "prm_contact1_mobile";
-
 	private static final String PARAMETER_CONTACT1_EMAIL = "prm_contact1_email";
-
 	private static final String PARAMETER_CONTACT1_PHONE = "prm_contact1_phone";
-
 	private static final String PARAMETER_CONTACT1_WORK_PHONE = "prm_contact1_work_phone";
-
 	private static final String PARAMETER_CONTACT1_RELATION = "prm_contact1_relation";
-
 	private static final String PARAMETER_CONTACT2_NAME = "prm_contact2_name";
-
 	private static final String PARAMETER_CONTACT2_PERSONAL_ID = "prm_contact2_personal_id";
-
 	private static final String PARAMETER_CONTACT2_HOME = "prm_contact2_home";
-
 	private static final String PARAMETER_CONTACT2_PO = "prm_contact2_po";
-
 	private static final String PARAMETER_CONTACT2_PLACE = "prm_contact2_place";
-
 	private static final String PARAMETER_CONTACT2_MOBILE = "prm_contact2_mobile";
-
 	private static final String PARAMETER_CONTACT2_EMAIL = "prm_contact2_email";
-
 	private static final String PARAMETER_CONTACT2_PHONE = "prm_contact2_phone";
-
 	private static final String PARAMETER_CONTACT2_WORK_PHONE = "prm_contact2_work_phone";
-
 	private static final String PARAMETER_CONTACT2_RELATION = "prm_contact2_relation";
-
 	private static final String PARAMETER_OTHER_INFO = "prm_other_info";
 
 	private IWResourceBundle iwrb = null;
+	private CourseChoice choice = null;
 
 	private int numberOfPhases = 2;
 	private boolean iUseSessionUser = false;
@@ -177,6 +148,7 @@ public class ChurchCourseApplication extends ApplicationForm {
 		form.setId("course_step_1");
 		form.add(new HiddenInput(PARAMETER_ACTION, String
 				.valueOf(ACTION_PHASE_1)));
+		form.maintainParameter(PARAMETER_APPLICATION_PK);
 
 		addErrors(iwc, form);
 
@@ -874,6 +846,15 @@ public class ChurchCourseApplication extends ApplicationForm {
 			action = Integer.parseInt(iwc.getParameter(PARAMETER_ACTION));
 		}
 
+		if (iwc.isParameterSet(PARAMETER_APPLICATION_PK)) {
+			try {
+				choice = getCourseBusiness(iwc).getCourseChoice(new Integer(iwc.getParameter(PARAMETER_APPLICATION_PK)));
+			}
+			catch (RemoteException re) {
+				re.printStackTrace();
+			}
+		}
+		
 		return action;
 	}
 
