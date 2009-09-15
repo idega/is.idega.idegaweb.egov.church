@@ -2,8 +2,13 @@ package is.idega.idegaweb.egov.church.data;
 
 import is.idega.idegaweb.egov.course.data.CourseApplication;
 
+import javax.ejb.FinderException;
+
 import com.idega.block.school.data.School;
 import com.idega.data.GenericEntity;
+import com.idega.data.query.MatchCriteria;
+import com.idega.data.query.SelectQuery;
+import com.idega.data.query.Table;
 import com.idega.user.data.User;
 
 public class ChurchCourseApplicationInfoBMPBean extends GenericEntity implements
@@ -125,4 +130,13 @@ public class ChurchCourseApplicationInfoBMPBean extends GenericEntity implements
 		setColumn(COLUMN_INFO, info);
 	}
 
+	public Object ejbFindByApplication(CourseApplication application) throws FinderException {
+		Table table = new Table(this);
+
+		SelectQuery query = new SelectQuery(table);
+		query.addColumn(table.getColumn(getIDColumnName()));
+		query.addCriteria(new MatchCriteria(table.getColumn(COLUMN_COURSE_APPLICATION), MatchCriteria.EQUALS, application));
+
+		return idoFindOnePKByQuery(query);
+	}
 }

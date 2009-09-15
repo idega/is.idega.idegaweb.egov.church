@@ -8,7 +8,6 @@ import is.idega.idegaweb.egov.course.CourseConstants;
 import is.idega.idegaweb.egov.course.business.CourseApplicationSession;
 import is.idega.idegaweb.egov.course.business.CourseBusiness;
 import is.idega.idegaweb.egov.course.business.CourseDWR;
-import is.idega.idegaweb.egov.course.data.ApplicationHolder;
 import is.idega.idegaweb.egov.course.data.Course;
 import is.idega.idegaweb.egov.course.data.CourseApplication;
 import is.idega.idegaweb.egov.course.data.CourseChoice;
@@ -25,6 +24,9 @@ import com.idega.block.school.presentation.SchoolDropdown;
 import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
+import com.idega.core.contact.data.Email;
+import com.idega.core.contact.data.Phone;
+import com.idega.core.location.data.Address;
 import com.idega.data.IDOLookup;
 import com.idega.idegaweb.IWResourceBundle;
 import com.idega.presentation.IWContext;
@@ -46,6 +48,8 @@ import com.idega.presentation.ui.Label;
 import com.idega.presentation.ui.RadioButton;
 import com.idega.presentation.ui.TextArea;
 import com.idega.presentation.ui.TextInput;
+import com.idega.user.business.NoEmailFoundException;
+import com.idega.user.business.NoPhoneFoundException;
 import com.idega.user.data.Gender;
 import com.idega.user.data.GenderHome;
 import com.idega.user.data.User;
@@ -54,12 +58,14 @@ import com.idega.util.IWTimestamp;
 import com.idega.util.PresentationUtil;
 import com.idega.util.text.SocialSecurityNumber;
 
-public class ChurchCourseApplication extends ApplicationForm {
+public class ChurchCourseParticipantEdit extends ApplicationForm {
 	
 	private static final String BUNDLE_IDENTIFIER = "is.idega.idegaweb.egov.church";
 
 	private static final int ACTION_PHASE_1 = 1;
 	private static final int ACTION_SAVE = 0;
+
+	public static final String PARAMETER_APPLICATION_PK = CourseBlock.PARAMETER_CHOICE_PK;
 
 	protected static final String PARAMETER_ACTION = "prm_action";
 
@@ -101,6 +107,7 @@ public class ChurchCourseApplication extends ApplicationForm {
 	private static final String PARAMETER_OTHER_INFO = "prm_other_info";
 
 	private IWResourceBundle iwrb = null;
+	private CourseChoice choice = null;
 
 	private int numberOfPhases = 2;
 	private boolean iUseSessionUser = false;
@@ -116,7 +123,7 @@ public class ChurchCourseApplication extends ApplicationForm {
 
 	@Override
 	public String getBundleIdentifier() {
-		return ChurchCourseApplication.BUNDLE_IDENTIFIER;
+		return ChurchCourseParticipantEdit.BUNDLE_IDENTIFIER;
 	}
 
 	@Override
@@ -145,6 +152,7 @@ public class ChurchCourseApplication extends ApplicationForm {
 		form.setId("course_step_1");
 		form.add(new HiddenInput(PARAMETER_ACTION, String
 				.valueOf(ACTION_PHASE_1)));
+		form.maintainParameter(PARAMETER_APPLICATION_PK);
 
 		addErrors(iwc, form);
 
@@ -206,27 +214,82 @@ public class ChurchCourseApplication extends ApplicationForm {
 				"application.child_info_help", "Child info help.")));
 		section.add(helpLayer);
 
+		User child = choice.getUser();
+		Address childAddressDef = getUserBusiness(iwc).getUsersMainAddress(child);
+		Phone childMobileDef = null;
+		try {
+			childMobileDef = getUserBusiness(iwc).getUsersMobilePhone(child);
+		} catch (NoPhoneFoundException e2) {
+		}
+		Email childEmailDef = null;
+		try {
+			childEmailDef = getUserBusiness(iwc).getUsersMainEmail(child);
+		} catch (NoEmailFoundException e1) {
+		}
+		User relative1 = choice.getApplication().getOwner();
+		Address relAddress1 = getUserBusiness(iwc).getUsersMainAddress(relative1);
+		Phone relPhone1 = null;
+		try {
+			relPhone1 = getUserBusiness(iwc).getUsersHomePhone(relative1);
+		} catch (NoPhoneFoundException e2) {
+		}
+		Phone relMobile1 = null;
+		try {
+			relMobile1 = getUserBusiness(iwc).getUsersMobilePhone(relative1);
+		} catch (NoPhoneFoundException e2) {
+		}
+		Phone relWorkPhone1 = null;
+		try {
+			relWorkPhone1 = getUserBusiness(iwc).getUsersWorkPhone(relative1);
+		} catch (NoPhoneFoundException e2) {
+		}
+		Email relEmail1 = null;
+		try {
+			relEmail1 = getUserBusiness(iwc).getUsersMainEmail(relative1);
+		} catch (NoEmailFoundException e1) {
+		}
+		
+		ChurchCourseApplicationInfo extraInfo = null;
+		User relative2 = null;
+		try {
+			extraInfo = getChurchCourseApplicationInfoHome().findByApplication(choice.getApplication());
+			relative2 = extraInfo.getExtraContact();
+		} catch (FinderException e) {
+		}
+
+		
 		TextInput childName = new TextInput(PARAMETER_CHILD_NAME);
 		childName.keepStatusOnAction(true);
+		childName.setValue(child.getName());
 
 		TextInput childPersonalID = new TextInput(PARAMETER_CHILD_PERSONAL_ID);
 		childPersonalID.setMaxlength(10);
 		childPersonalID.keepStatusOnAction(true);
+		childPersonalID.setValue(child.getPersonalID());
 
 		TextInput childHome = new TextInput(PARAMETER_CHILD_HOME);
 		childHome.keepStatusOnAction(true);
-
+		childHome.setValue(childAddressDef.getStreetAddress());
+		
 		TextInput childPO = new TextInput(PARAMETER_CHILD_PO);
 		childPO.keepStatusOnAction(true);
+		childPO.setValue(childAddressDef.getPostalCode().getPostalCode());
 
 		TextInput childPlace = new TextInput(PARAMETER_CHILD_PLACE);
 		childPlace.keepStatusOnAction(true);
+		childPlace.setValue(childAddressDef.getPostalCode().getName());
 
 		TextInput childMobile = new TextInput(PARAMETER_CHILD_MOBILE);
 		childMobile.keepStatusOnAction(true);
+		if (childMobileDef != null) {
+			childMobile.setValue(childMobileDef.getNumber());
+		}
 
 		TextInput childEmail = new TextInput(PARAMETER_CHILD_EMAIL);
 		childEmail.keepStatusOnAction(true);
+		if (childEmailDef != null) {
+			childEmail.setValue(childEmailDef.getEmailAddress());
+		}
 
 		DropdownMenu childGender = new DropdownMenu(PARAMETER_CHILD_GENDER);
 		childGender.addMenuElement(-1, this.iwrb.getLocalizedString(
@@ -236,7 +299,12 @@ public class ChurchCourseApplication extends ApplicationForm {
 		childGender.addMenuElement(1, this.iwrb.getLocalizedString(
 				"child.female", "Female"));
 		childGender.keepStatusOnAction(true);
-
+		if (child.getGender().isMaleGender()) {
+			childGender.setSelectedElement(0);
+		} else {
+			childGender.setSelectedElement(1);
+		}
+		
 		DropdownMenu childReligion = new DropdownMenu(PARAMETER_CHILD_RELIGION);
 		childReligion.addMenuElement(-1, this.iwrb.getLocalizedString(
 				"religion.select_religion", "Please select religion"));
@@ -245,6 +313,7 @@ public class ChurchCourseApplication extends ApplicationForm {
 		childReligion.addMenuElement(1, this.iwrb.getLocalizedString(
 				"religion.other", "Other"));
 		childReligion.keepStatusOnAction(true);
+		childReligion.setSelectedElement(extraInfo.getReligion());
 
 		IWTimestamp stamp = new IWTimestamp();
 		stamp.addYears(-13);
@@ -253,19 +322,25 @@ public class ChurchCourseApplication extends ApplicationForm {
 				PARAMETER_CHILD_CHRISTENING_DATE);
 		childChristeningDate.setShowYearChange(true);
 		childChristeningDate.keepStatusOnAction(true);
+		//IWTimestamp cDate = new IWTimestamp(extraInfo.getChristeningDate());
 		childChristeningDate.setDate(stamp.getDate());
 
 		TextInput mothersName = new TextInput(PARAMETER_MOTHERS_NAME);
 		mothersName.keepStatusOnAction(true);
+		mothersName.setValue(extraInfo.getMothersName());
 
 		TextInput fathersName = new TextInput(PARAMETER_FATHERS_NAME);
 		fathersName.keepStatusOnAction(true);
+		fathersName.setValue(extraInfo.getFathersName());
 
 		DropdownMenu childSchool = new SchoolDropdown(PARAMETER_CHILD_SCHOOL,
 				dropdownSchoolTypePK.intValue());
 		childSchool.addMenuElementFirst("-1", this.iwrb.getLocalizedString(
 				"child.select_school", "Please select school"));
 		childSchool.keepStatusOnAction(true);
+		if (extraInfo.getSchool() != null) {
+			childSchool.setSelectedElement(extraInfo.getSchool().getPrimaryKey().toString());
+		}
 
 		Layer formItem = new Layer(Layer.DIV);
 		formItem.setStyleClass("formItem");
@@ -418,7 +493,6 @@ public class ChurchCourseApplication extends ApplicationForm {
 			int counter = 0;
 			while (iter.hasNext()) {
 				CourseDWR course = (CourseDWR) iter.next();
-				if (!course.getIsfull()) {
 					row = group.createRow();
 					if (counter++ % 2 == 0) {
 						row.setStyleClass("even");
@@ -433,6 +507,9 @@ public class ChurchCourseApplication extends ApplicationForm {
 					radio.setStyleClass("checkbox");
 					radio.keepStatusOnAction(true);
 					cell.add(radio);
+					if (course.getPk().equals(this.choice.getCourse().getPrimaryKey().toString())) {
+						radio.setSelected(true);
+					}
 
 					cell = row.createCell();
 					cell.setStyleClass("column1");
@@ -447,7 +524,6 @@ public class ChurchCourseApplication extends ApplicationForm {
 					cell.setStyleClass("column3");
 					cell.add(new Text(course.getFirstDateOfCourse()
 							.getDateString("HH:mm")));
-				}
 			}
 		}
 
@@ -476,33 +552,46 @@ public class ChurchCourseApplication extends ApplicationForm {
 		// Contact 1
 		TextInput contact1Name = new TextInput(PARAMETER_CONTACT1_NAME);
 		contact1Name.keepStatusOnAction(true);
+		contact1Name.setValue(relative1.getName());
 
 		TextInput contact1PersonalID = new TextInput(
 				PARAMETER_CONTACT1_PERSONAL_ID);
 		contact1PersonalID.setMaxlength(10);
 		contact1PersonalID.keepStatusOnAction(true);
+		contact1PersonalID.setValue(relative1.getPersonalID());
 
 		TextInput contact1Home = new TextInput(PARAMETER_CONTACT1_HOME);
 		contact1Home.keepStatusOnAction(true);
+		contact1Home.setValue(relAddress1.getStreetAddress());
 
 		TextInput contact1PO = new TextInput(PARAMETER_CONTACT1_PO);
 		contact1PO.keepStatusOnAction(true);
+		contact1PO.setValue(relAddress1.getPostalCode().getPostalCode());
 
 		TextInput contact1Place = new TextInput(PARAMETER_CONTACT1_PLACE);
 		contact1Place.keepStatusOnAction(true);
+		contact1Place.setValue(relAddress1.getPostalCode().getName());
 
 		TextInput contact1Email = new TextInput(PARAMETER_CONTACT1_EMAIL);
 		contact1Email.keepStatusOnAction(true);
+		contact1Email.setValue(relEmail1.getEmailAddress());
 
 		TextInput contact1Phone = new TextInput(PARAMETER_CONTACT1_PHONE);
 		contact1Phone.keepStatusOnAction(true);
+		contact1Phone.setValue(relPhone1.getNumber());
 
 		TextInput contact1Mobile = new TextInput(PARAMETER_CONTACT1_MOBILE);
 		contact1Mobile.keepStatusOnAction(true);
+		if (relMobile1 != null) {
+			contact1Mobile.setValue(relMobile1.getNumber());
+		}
 
 		TextInput contact1WorkPhone = new TextInput(
 				PARAMETER_CONTACT1_WORK_PHONE);
 		contact1WorkPhone.keepStatusOnAction(true);
+		if (relWorkPhone1 != null) {
+			contact1WorkPhone.setValue(relWorkPhone1.getNumber());
+		}
 
 		DropdownMenu contact1Relation = new DropdownMenu(
 				PARAMETER_CONTACT1_RELATION);
@@ -517,6 +606,8 @@ public class ChurchCourseApplication extends ApplicationForm {
 		contact1Relation.addMenuElement(FamilyConstants.RELATION_OTHER, this.iwrb.getLocalizedString("relation.other", "Other"));
 		contact1Relation.keepStatusOnAction(true);
 
+		contact1Relation.setSelectedElement(extraInfo.getContactRelation());
+		
 		heading = new Heading1(this.iwrb.getLocalizedString("contact1",
 				"Contact 1"));
 		heading.setStyleClass("subHeader");
@@ -665,6 +756,46 @@ public class ChurchCourseApplication extends ApplicationForm {
 		contact2Relation.addMenuElement(FamilyConstants.RELATION_OTHER, this.iwrb.getLocalizedString("relation.other", "Other"));
 		contact2Relation.keepStatusOnAction(true);
 
+		if (relative2 != null) {
+			Address relAddress2 = getUserBusiness(iwc).getUsersMainAddress(relative2);
+			Phone relPhone2 = null;
+			try {
+				relPhone2 = getUserBusiness(iwc).getUsersHomePhone(relative2);
+			} catch (NoPhoneFoundException e2) {
+			}
+			Phone relMobile2 = null;
+			try {
+				relMobile2 = getUserBusiness(iwc).getUsersMobilePhone(relative2);
+			} catch (NoPhoneFoundException e2) {
+			}
+			Phone relWorkPhone2 = null;
+			try {
+				relWorkPhone2 = getUserBusiness(iwc).getUsersWorkPhone(relative2);
+			} catch (NoPhoneFoundException e2) {
+			}
+			Email relEmail2 = null;
+			try {
+				relEmail2 = getUserBusiness(iwc).getUsersMainEmail(relative2);
+			} catch (NoEmailFoundException e1) {
+			}
+
+			contact2Name.setValue(relative2.getName());
+			contact2PersonalID.setValue(relative2.getPersonalID());
+			contact2Home.setValue(relAddress2.getStreetAddress());
+			contact2PO.setValue(relAddress2.getPostalCode().getPostalCode());
+			contact2Place.setValue(relAddress2.getPostalCode().getName());
+			contact2Email.setValue(relEmail2.getEmailAddress());
+			contact2Phone.setValue(relPhone2.getNumber());
+			if (relMobile2 != null) {
+				contact2Mobile.setValue(relMobile2.getNumber());
+			}
+			if (relWorkPhone2 != null) {
+				contact2WorkPhone.setValue(relWorkPhone2.getNumber());
+			}
+			
+			contact2Relation.setSelectedElement(extraInfo.getExtraContactRelation());
+		}
+		
 		heading = new Heading1(this.iwrb.getLocalizedString("contact2",
 				"Contact 2"));
 		heading.setStyleClass("subHeader");
@@ -787,6 +918,9 @@ public class ChurchCourseApplication extends ApplicationForm {
 
 		TextArea otherInfo = new TextArea(PARAMETER_OTHER_INFO);
 		otherInfo.keepStatusOnAction(true);
+		if (extraInfo.getInfo() != null) {
+			otherInfo.setValue(extraInfo.getInfo());
+		}
 
 		formItem = new Layer(Layer.DIV);
 		formItem.setStyleClass("formItem");
@@ -808,16 +942,7 @@ public class ChurchCourseApplication extends ApplicationForm {
 
 		if (this.showSubmitDateString != null) {
 			IWTimestamp open = new IWTimestamp(this.showSubmitDateString);
-			// open.setDay(18);
-			// open.setMonth(5);
-			// open.setYear(2009);
-			// open.setTime(9, 0, 0);
-
-			System.out.println("open = "
-					+ open.getDateString("dd.MM.yyyy hh:mm:ss"));
 			IWTimestamp now = new IWTimestamp();
-			System.out.println("now = "
-					+ now.getDateString("dd.MM.yyyy hh:mm:ss"));
 			if (now.isLaterThan(open)) {
 				bottom.add(next);
 			}
@@ -840,6 +965,15 @@ public class ChurchCourseApplication extends ApplicationForm {
 		int action = ACTION_PHASE_1;
 		if (iwc.isParameterSet(PARAMETER_ACTION)) {
 			action = Integer.parseInt(iwc.getParameter(PARAMETER_ACTION));
+		}
+
+		if (iwc.isParameterSet(PARAMETER_APPLICATION_PK)) {
+			try {
+				choice = getCourseBusiness(iwc).getCourseChoice(new Integer(iwc.getParameter(PARAMETER_APPLICATION_PK)));
+			}
+			catch (RemoteException re) {
+				re.printStackTrace();
+			}
 		}
 		
 		return action;
@@ -882,6 +1016,16 @@ public class ChurchCourseApplication extends ApplicationForm {
 				return;
 			}
 		}
+		String coursePK = iwc.getParameter(PARAMETER_COURSE);
+
+		if (coursePK != null) {
+			if (!this.choice.getCourse().getPrimaryKey().toString().equals(coursePK)) {
+				Course course = getCourseBusiness(iwc).getCourse(
+						new Integer(coursePK.toString()));
+				this.choice.setCourse(course);
+				this.choice.store();
+			}
+		}
 
 		Gender gender = null;
 		if ("0".equals(childGender)) {
@@ -906,15 +1050,6 @@ public class ChurchCourseApplication extends ApplicationForm {
 
 			showPhaseOne(iwc);
 			return;
-		}
-
-		boolean available = addApplication(iwc, child);
-		if (!available) {
-			setError(PARAMETER_COURSE, this.iwrb.getLocalizedString(
-					"error.course_full", "Course full"));
-
-			showPhaseOne(iwc);
-			return;			
 		}
 		
 		if (childMobile != null) {
@@ -1004,7 +1139,8 @@ public class ChurchCourseApplication extends ApplicationForm {
 			e.printStackTrace();
 		}
 
-		CourseApplication application = getCourseBusiness(iwc).saveApplication(getCourseApplicationSession(iwc).getApplications(), contact1, iwc.getCurrentLocale());
+		CourseApplication application = this.choice.getApplication();
+		application.setOwner(contact1);
 		
 		User contact2 = null;
 
@@ -1076,8 +1212,8 @@ public class ChurchCourseApplication extends ApplicationForm {
 
 		}
 
-		String childChristeningDate = iwc
-				.getParameter(PARAMETER_CHILD_CHRISTENING_DATE);
+		//String childChristeningDate = iwc
+		//		.getParameter(PARAMETER_CHILD_CHRISTENING_DATE);
 		String childMotherName = iwc.getParameter(PARAMETER_MOTHERS_NAME);
 		String childFatherName = iwc.getParameter(PARAMETER_FATHERS_NAME);
 		String childReligion = iwc.getParameter(PARAMETER_CHILD_RELIGION);
@@ -1090,9 +1226,9 @@ public class ChurchCourseApplication extends ApplicationForm {
 				.getParameter(PARAMETER_OTHER_INFO) : null;
 				
 		try {
-			ChurchCourseApplicationInfo info = getChurchCourseApplicationInfoHome().create();
+			ChurchCourseApplicationInfo info = getChurchCourseApplicationInfoHome().findByApplication(application);
 			info.setApplication(application);
-			info.setChristeningDate(childChristeningDate);
+			//info.setChristeningDate(childChristeningDate);
 			info.setMothersName(childMotherName);
 			info.setFathersName(childFatherName);
 			info.setReligion(childReligion);
@@ -1110,7 +1246,7 @@ public class ChurchCourseApplication extends ApplicationForm {
 			}
 			
 			info.store();
-		} catch (CreateException e) {
+		} catch (FinderException e) {
 			e.printStackTrace();
 		}
 		
@@ -1140,27 +1276,6 @@ public class ChurchCourseApplication extends ApplicationForm {
 			add(getStopLayer(this.iwrb.getLocalizedString("application.submit_failed", "Application submit failed"), this.iwrb.getLocalizedString("application.submit_failed_info", "Application submit failed")));
 		}
 
-	}
-
-	private boolean addApplication(IWContext iwc, User applicant)
-			throws RemoteException {
-		Object coursePK = iwc.getParameter(PARAMETER_COURSE);
-
-		if (coursePK != null && applicant != null) {
-			ApplicationHolder holder = new ApplicationHolder();
-			Course course = getCourseBusiness(iwc).getCourse(
-					new Integer(coursePK.toString()));
-			
-			if (course.getFreePlaces() <= 0) {
-				return false;
-			}
-			holder.setCourse(course);
-			holder.setUser(applicant);
-
-			getCourseApplicationSession(iwc).addApplication(applicant, holder);
-		}
-
-		return true;
 	}
 
 	private CourseApplicationSession getCourseApplicationSession(IWContext iwc) {
