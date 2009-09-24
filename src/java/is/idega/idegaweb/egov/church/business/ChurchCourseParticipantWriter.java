@@ -148,6 +148,10 @@ public class ChurchCourseParticipantWriter extends DownloadWriter implements Med
 
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFSheet sheet = wb.createSheet(StringHandler.shortenToLength(this.courseName, 30));
+		HSSFSheet sheet2 = wb.createSheet(StringHandler.shortenToLength(this.iwrb.getLocalizedString("education_group_1", "Group 1"), 30));
+		HSSFSheet sheet3 = wb.createSheet(StringHandler.shortenToLength(this.iwrb.getLocalizedString("education_group_2", "Group 2"), 30));
+		HSSFSheet sheet4 = wb.createSheet(StringHandler.shortenToLength(this.iwrb.getLocalizedString("education_group_3", "Group 3"), 30));
+
 		sheet.setColumnWidth((short) 0, (short) (14 * 256));
 		sheet.setColumnWidth((short) 1, (short) (14 * 256));
 		sheet.setColumnWidth((short) 2, (short) (30 * 256));
@@ -194,6 +198,10 @@ public class ChurchCourseParticipantWriter extends DownloadWriter implements Med
 		bigStyle.setFont(bigFont);
 
 		int cellRow = 0;
+		int cellRow2 = 0;
+		int cellRow3 = 0;
+		int cellRow4 = 0;
+
 		HSSFRow row = sheet.createRow(cellRow++);
 		HSSFCell cell = row.createCell((short) 0);
 		cell.setCellValue(this.courseName);
@@ -307,6 +315,36 @@ public class ChurchCourseParticipantWriter extends DownloadWriter implements Med
 		cell.setCellValue(this.iwrb.getLocalizedString("other_info", "Other info"));
 		cell.setCellStyle(style);
 		
+		//sheet2
+		iCell = 0;
+		row = sheet2.createRow(cellRow2++);
+		cell = row.createCell(iCell++);
+		cell.setCellValue(this.iwrb.getLocalizedString("name", "Name"));
+		cell.setCellStyle(style);
+		cell = row.createCell(iCell++);
+		cell.setCellValue(this.iwrb.getLocalizedString("personal_id", "Personal ID"));
+		cell.setCellStyle(style);
+
+		//sheet3
+		iCell = 0;
+		row = sheet3.createRow(cellRow3++);
+		cell = row.createCell(iCell++);
+		cell.setCellValue(this.iwrb.getLocalizedString("name", "Name"));
+		cell.setCellStyle(style);
+		cell = row.createCell(iCell++);
+		cell.setCellValue(this.iwrb.getLocalizedString("personal_id", "Personal ID"));
+		cell.setCellStyle(style);
+
+		//sheet4
+		iCell = 0;
+		row = sheet4.createRow(cellRow4++);
+		cell = row.createCell(iCell++);
+		cell.setCellValue(this.iwrb.getLocalizedString("name", "Name"));
+		cell.setCellStyle(style);
+		cell = row.createCell(iCell++);
+		cell.setCellValue(this.iwrb.getLocalizedString("personal_id", "Personal ID"));
+		cell.setCellStyle(style);
+
 		CourseChoice choice;
 		Course course;
 
@@ -470,6 +508,35 @@ public class ChurchCourseParticipantWriter extends DownloadWriter implements Med
 			if (extraInfo.getInfo() != null) {
 				row.createCell((short) iCell++).setCellValue(extraInfo.getInfo());				
 			}
+			
+			if (extraInfo.getEducationGroup() > 0) {
+				switch (extraInfo.getEducationGroup()) {
+				case 1 : {
+					row = sheet2.createRow(cellRow2++);
+					iCell = 0;
+					row.createCell((short) iCell++).setCellValue(name.getName(this.locale, true));
+					row.createCell((short) iCell++).setCellValue(PersonalIDFormatter.format(relative1.getPersonalID(), this.locale));
+
+					break;
+				}
+				case 2 : {
+					row = sheet3.createRow(cellRow3++);
+					iCell = 0;
+					row.createCell((short) iCell++).setCellValue(name.getName(this.locale, true));
+					row.createCell((short) iCell++).setCellValue(PersonalIDFormatter.format(relative1.getPersonalID(), this.locale));
+
+					break;
+				}
+				case 3 : {
+					row = sheet4.createRow(cellRow4++);
+					iCell = 0;
+					row.createCell((short) iCell++).setCellValue(name.getName(this.locale, true));
+					row.createCell((short) iCell++).setCellValue(PersonalIDFormatter.format(relative1.getPersonalID(), this.locale));
+
+					break;
+				}
+				}
+			}
 		}
 		wb.write(mos);
 		buffer.setMimeType(MimeTypeUtil.MIME_TYPE_EXCEL_2);
@@ -483,6 +550,9 @@ public class ChurchCourseParticipantWriter extends DownloadWriter implements Med
 
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFSheet sheet = wb.createSheet(StringHandler.shortenToLength(this.courseName, 30));
+		HSSFSheet sheet2 = wb.createSheet(StringHandler.shortenToLength(this.iwrb.getLocalizedString("education_group_1", "Group 1"), 30));
+		HSSFSheet sheet3 = wb.createSheet(StringHandler.shortenToLength(this.iwrb.getLocalizedString("education_group_2", "Group 2"), 30));
+		HSSFSheet sheet4 = wb.createSheet(StringHandler.shortenToLength(this.iwrb.getLocalizedString("education_group_3", "Group 3"), 30));
 		sheet.setColumnWidth((short) 0, (short) (30 * 256));
 		sheet.setColumnWidth((short) 1, (short) (14 * 256));
 		sheet.setColumnWidth((short) 2, (short) (30 * 256));
@@ -514,6 +584,15 @@ public class ChurchCourseParticipantWriter extends DownloadWriter implements Med
 		sheet.setColumnWidth((short) 28, (short) (14 * 256));
 		sheet.setColumnWidth((short) 29, (short) (14 * 256));
 		sheet.setColumnWidth((short) 30, (short) (14 * 256));
+
+		sheet2.setColumnWidth((short) 0, (short) (30 * 256));
+		sheet2.setColumnWidth((short) 1, (short) (14 * 256));
+		sheet3.setColumnWidth((short) 0, (short) (30 * 256));
+		sheet3.setColumnWidth((short) 1, (short) (14 * 256));
+		sheet4.setColumnWidth((short) 0, (short) (30 * 256));
+		sheet4.setColumnWidth((short) 1, (short) (14 * 256));
+
+		
 		HSSFFont font = wb.createFont();
 		font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
 		font.setFontHeightInPoints((short) 12);
@@ -527,6 +606,10 @@ public class ChurchCourseParticipantWriter extends DownloadWriter implements Med
 		bigStyle.setFont(bigFont);
 
 		int cellRow = 0;
+		int cellRow2 = 0;
+		int cellRow3 = 0;
+		int cellRow4 = 0;
+		
 		HSSFRow row = sheet.createRow(cellRow++);
 		HSSFCell cell = row.createCell((short) 0);
 		cell.setCellValue(this.courseName);
@@ -634,15 +717,42 @@ public class ChurchCourseParticipantWriter extends DownloadWriter implements Med
 		cell.setCellValue(this.iwrb.getLocalizedString("other_info", "Other info"));
 		cell.setCellStyle(style);
 		
+		//sheet2
+		iCell = 0;
+		row = sheet2.createRow(cellRow2++);
+		cell = row.createCell(iCell++);
+		cell.setCellValue(this.iwrb.getLocalizedString("name", "Name"));
+		cell.setCellStyle(style);
+		cell = row.createCell(iCell++);
+		cell.setCellValue(this.iwrb.getLocalizedString("personal_id", "Personal ID"));
+		cell.setCellStyle(style);
+
+		//sheet3
+		iCell = 0;
+		row = sheet3.createRow(cellRow3++);
+		cell = row.createCell(iCell++);
+		cell.setCellValue(this.iwrb.getLocalizedString("name", "Name"));
+		cell.setCellStyle(style);
+		cell = row.createCell(iCell++);
+		cell.setCellValue(this.iwrb.getLocalizedString("personal_id", "Personal ID"));
+		cell.setCellStyle(style);
+
+		//sheet4
+		iCell = 0;
+		row = sheet4.createRow(cellRow4++);
+		cell = row.createCell(iCell++);
+		cell.setCellValue(this.iwrb.getLocalizedString("name", "Name"));
+		cell.setCellStyle(style);
+		cell = row.createCell(iCell++);
+		cell.setCellValue(this.iwrb.getLocalizedString("personal_id", "Personal ID"));
+		cell.setCellStyle(style);
+		
 		CourseChoice choice;
-//		CourseApplication application;
 
 		Iterator iter = choices.iterator();
 		while (iter.hasNext()) {
 			row = sheet.createRow(cellRow++);
 			choice = (CourseChoice) iter.next();
-//			application = choice.getApplication();
-
 			
 			User child = choice.getUser();
 			Address childAddressDef = userBusiness.getUsersMainAddress(child);
@@ -790,6 +900,35 @@ public class ChurchCourseParticipantWriter extends DownloadWriter implements Med
 			
 			if (extraInfo.getInfo() != null) {
 				row.createCell((short) iCell++).setCellValue(extraInfo.getInfo());				
+			}
+			
+			if (extraInfo.getEducationGroup() > 0) {
+				switch (extraInfo.getEducationGroup()) {
+				case 1 : {
+					row = sheet2.createRow(cellRow2++);
+					iCell = 0;
+					row.createCell((short) iCell++).setCellValue(name.getName(this.locale, true));
+					row.createCell((short) iCell++).setCellValue(PersonalIDFormatter.format(relative1.getPersonalID(), this.locale));
+
+					break;
+				}
+				case 2 : {
+					row = sheet3.createRow(cellRow3++);
+					iCell = 0;
+					row.createCell((short) iCell++).setCellValue(name.getName(this.locale, true));
+					row.createCell((short) iCell++).setCellValue(PersonalIDFormatter.format(relative1.getPersonalID(), this.locale));
+
+					break;
+				}
+				case 3 : {
+					row = sheet4.createRow(cellRow4++);
+					iCell = 0;
+					row.createCell((short) iCell++).setCellValue(name.getName(this.locale, true));
+					row.createCell((short) iCell++).setCellValue(PersonalIDFormatter.format(relative1.getPersonalID(), this.locale));
+
+					break;
+				}
+				}
 			}
 		}
 		wb.write(mos);

@@ -58,6 +58,11 @@ public interface ChurchCourseApplicationInfo extends IDOEntity {
 	public String getInfo();
 
 	/**
+	 * @see is.idega.idegaweb.egov.church.data.ChurchCourseApplicationInfoBMPBean#getEducationGroup
+	 */
+	public int getEducationGroup();
+
+	/**
 	 * @see is.idega.idegaweb.egov.church.data.ChurchCourseApplicationInfoBMPBean#setApplication
 	 */
 	public void setApplication(CourseApplication application);
@@ -106,4 +111,9 @@ public interface ChurchCourseApplicationInfo extends IDOEntity {
 	 * @see is.idega.idegaweb.egov.church.data.ChurchCourseApplicationInfoBMPBean#setInfo
 	 */
 	public void setInfo(String info);
+
+	/**
+	 * @see is.idega.idegaweb.egov.church.data.ChurchCourseApplicationInfoBMPBean#setEducationGroup
+	 */
+	public void setEducationGroup(int group);
 }

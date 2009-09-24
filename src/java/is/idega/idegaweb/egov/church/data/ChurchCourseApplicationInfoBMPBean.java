@@ -27,6 +27,8 @@ public class ChurchCourseApplicationInfoBMPBean extends GenericEntity implements
 	private static final String COLUMN_EXTRA_CONTACT_RELATION = "extra_contact_relation";
 	private static final String COLUMN_INFO = "info";
 	
+	private static final String COLUMN_EDUCATION_GROUP = "education_group"; //not a real group, just an integer used for reports
+	
 	@Override
 	public String getEntityName() {
 		return ENTITY_NAME;
@@ -45,7 +47,7 @@ public class ChurchCourseApplicationInfoBMPBean extends GenericEntity implements
 		addAttribute(COLUMN_CONTACT_RELATION, "", String.class);
 		addAttribute(COLUMN_EXTRA_CONTACT_RELATION, "", String.class);
 		addAttribute(COLUMN_INFO, "", String.class, 1000);
-		
+		addAttribute(COLUMN_EDUCATION_GROUP, "", Integer.class);
 	}
 
 	//getters
@@ -89,6 +91,10 @@ public class ChurchCourseApplicationInfoBMPBean extends GenericEntity implements
 		return getStringColumnValue(COLUMN_INFO);
 	}
 	
+	public int getEducationGroup() {
+		return getIntColumnValue(COLUMN_EDUCATION_GROUP, 0);
+	}
+	
 	//setters
 	public void setApplication(CourseApplication application) {
 		setColumn(COLUMN_COURSE_APPLICATION, application);
@@ -130,6 +136,11 @@ public class ChurchCourseApplicationInfoBMPBean extends GenericEntity implements
 		setColumn(COLUMN_INFO, info);
 	}
 
+	public void setEducationGroup(int group) {
+		setColumn(COLUMN_EDUCATION_GROUP, group);
+	}
+	
+	//ejb
 	public Object ejbFindByApplication(CourseApplication application) throws FinderException {
 		Table table = new Table(this);
 
