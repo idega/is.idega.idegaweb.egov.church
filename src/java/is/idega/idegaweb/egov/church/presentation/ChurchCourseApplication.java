@@ -11,8 +11,6 @@ import is.idega.idegaweb.egov.course.business.CourseDWR;
 import is.idega.idegaweb.egov.course.data.ApplicationHolder;
 import is.idega.idegaweb.egov.course.data.Course;
 import is.idega.idegaweb.egov.course.data.CourseApplication;
-import is.idega.idegaweb.egov.course.data.CourseChoice;
-import is.idega.idegaweb.egov.course.presentation.CourseBlock;
 
 import java.rmi.RemoteException;
 import java.util.Collection;
@@ -808,16 +806,8 @@ public class ChurchCourseApplication extends ApplicationForm {
 
 		if (this.showSubmitDateString != null) {
 			IWTimestamp open = new IWTimestamp(this.showSubmitDateString);
-			// open.setDay(18);
-			// open.setMonth(5);
-			// open.setYear(2009);
-			// open.setTime(9, 0, 0);
 
-			System.out.println("open = "
-					+ open.getDateString("dd.MM.yyyy hh:mm:ss"));
 			IWTimestamp now = new IWTimestamp();
-			System.out.println("now = "
-					+ now.getDateString("dd.MM.yyyy hh:mm:ss"));
 			if (now.isLaterThan(open)) {
 				bottom.add(next);
 			}

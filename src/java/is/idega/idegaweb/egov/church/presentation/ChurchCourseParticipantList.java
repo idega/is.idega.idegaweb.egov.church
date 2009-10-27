@@ -1,7 +1,9 @@
 package is.idega.idegaweb.egov.church.presentation;
 
 import is.idega.idegaweb.egov.church.business.ChurchCourseParticipantWriter;
+import is.idega.idegaweb.egov.citizen.presentation.CitizenFinder;
 import is.idega.idegaweb.egov.course.CourseConstants;
+import is.idega.idegaweb.egov.course.business.CourseBusiness;
 import is.idega.idegaweb.egov.course.data.Course;
 import is.idega.idegaweb.egov.course.data.CourseChoice;
 import is.idega.idegaweb.egov.course.data.CourseType;
@@ -15,6 +17,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.idega.block.school.data.SchoolType;
+import com.idega.business.IBOLookup;
+import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
 import com.idega.core.contact.data.Phone;
 import com.idega.core.location.data.Address;
@@ -41,6 +45,7 @@ import com.idega.util.PresentationUtil;
 import com.idega.util.text.Name;
 
 public class ChurchCourseParticipantList extends CourseParticipantsList {
+	private static final String PARAMETER_CHOICE_REMOVE = "prm_remove_choice";
 	private CourseType defaultCourseType = null;
 
 	@Override
@@ -51,6 +56,10 @@ public class ChurchCourseParticipantList extends CourseParticipantsList {
 			form.setStyleClass("adminForm");
 			form.setEventListener(this.getClass());
 
+			if (iwc.isParameterSet(PARAMETER_CHOICE_REMOVE)) {
+				removeChoiceFromCourse(iwc);
+			}
+			
 			form.add(getNavigation(iwc));
 			if (iwc.isParameterSet(PARAMETER_COURSE_PK) || this.getSession().getIsAllProvidersSelected()) {
 				form.add(getPrintouts(iwc));
@@ -72,6 +81,201 @@ public class ChurchCourseParticipantList extends CourseParticipantsList {
 		catch (RemoteException re) {
 			throw new IBORuntimeException(re);
 		}
+	}
+
+	private void removeChoiceFromCourse(IWContext iwc) {
+			try {
+				CourseChoice choice = getCourseBusiness(iwc)
+						.getCourseChoice(
+								new Integer(iwc
+										.getParameter(PARAMETER_CHOICE_REMOVE)));
+				
+				getCourseBusiness(iwc).invalidateApplication(choice.getApplication(), iwc.getCurrentUser(), iwc.getCurrentLocale());
+			} catch (RemoteException re) {
+				re.printStackTrace();
+			}
+	}
+	
+	@Override
+	protected Table2 getParticipants(IWContext iwc) throws RemoteException {
+		Table2 table = new Table2();
+		table.setStyleClass("adminTable");
+		table.setStyleClass("ruler");
+		table.setWidth("100%");
+		table.setCellpadding(0);
+		table.setCellspacing(0);
+
+		TableRowGroup group = table.createHeaderRowGroup();
+		TableRow row = group.createRow();
+		TableCell2 cell = row.createHeaderCell();
+		cell.setStyleClass("firstColumn");
+		cell.setStyleClass("number");
+		cell.add(Text.getNonBrakingSpace());
+
+		int columns = 1;
+
+		cell = row.createHeaderCell();
+		cell.setStyleClass("name");
+		cell.add(new Text(getResourceBundle().getLocalizedString("name", "Name")));
+		columns++;
+
+		cell = row.createHeaderCell();
+		cell.setStyleClass("personalID");
+		cell.add(new Text(getResourceBundle().getLocalizedString("personal_id", "Personal ID")));
+		columns++;
+
+		cell = row.createHeaderCell();
+		cell.setStyleClass("address");
+		cell.add(new Text(getResourceBundle().getLocalizedString("address", "Address")));
+		columns++;
+
+		cell = row.createHeaderCell();
+		cell.setStyleClass("postalCode");
+		cell.add(new Text(getResourceBundle().getLocalizedString("postal_code", "Postal code")));
+		columns++;
+
+		cell = row.createHeaderCell();
+		cell.setStyleClass("homePhone");
+		cell.add(new Text(getResourceBundle().getLocalizedString("home_phone", "Phone")));
+		columns++;
+
+		cell = row.createHeaderCell();
+		cell.setStyleClass("lastColumn");
+		cell.setStyleClass("deleteChoice");
+		cell.add(Text.getNonBrakingSpace());
+		columns++;
+
+		group = table.createBodyRowGroup();
+		int iRow = 1;
+
+		Course course = null;
+		CourseType type = null;
+		Collection choices = new ArrayList();
+		if (iwc.isParameterSet(PARAMETER_COURSE_PK)) {
+			choices = getBusiness().getCourseChoices(iwc.getParameter(PARAMETER_COURSE_PK), false);
+			course = getBusiness().getCourse(iwc.getParameter(PARAMETER_COURSE_PK));
+			type = course.getCourseType();
+			if (type.getAbbreviation() != null) {
+				table.setStyleClass("abbr_" + type.getAbbreviation());
+			}
+		}
+
+		Iterator iter = choices.iterator();
+		while (iter.hasNext()) {
+			row = group.createRow();
+
+			CourseChoice choice = (CourseChoice) iter.next();
+			User user = choice.getUser();
+			Address address = getUserBusiness().getUsersMainAddress(user);
+			PostalCode postalCode = null;
+			if (address != null) {
+				postalCode = address.getPostalCode();
+			}
+			Phone phone = getUserBusiness().getChildHomePhone(user);
+
+			if (iRow == course.getMax()) {
+				row.setStyleClass("lastAvailable");
+			}
+			else if (iRow == (course.getMax() + 1)) {
+				row.setStyleClass("firstExceedingParticipant");
+			}
+
+			if (iRow > course.getMax()) {
+				row.setStyleClass("exceedingParticipant");
+			}
+
+			cell = row.createCell();
+			cell.setStyleClass("firstColumn");
+			cell.setStyleClass("number");
+			cell.add(new Text(String.valueOf(iRow)));
+
+			Name name = new Name(user.getFirstName(), user.getMiddleName(), user.getLastName());
+
+			cell = row.createCell();
+			cell.setStyleClass("name");
+			if (getResponsePage() != null) {
+				Link link = new Link(name.getName(iwc.getCurrentLocale()));
+				link.addParameter(PARAMETER_CHOICE_PK, choice.getPrimaryKey().toString());
+				link.setPage(getResponsePage());
+
+				cell.add(link);
+			}
+			else {
+				cell.add(new Text(name.getName(iwc.getCurrentLocale())));
+			}
+
+			cell = row.createCell();
+			cell.setStyleClass("personalID");
+			if (getChangeEmailResponsePage() != null) {
+				Link link = new Link(PersonalIDFormatter.format(user.getPersonalID(), iwc.getCurrentLocale()));
+				link.setEventListener(CitizenFinder.class);
+				if (user.getUniqueId() != null) {
+					link.addParameter(PARAMETER_USER_UNIQUE_ID, user.getUniqueId());
+				}
+				else {
+					link.addParameter(PARAMETER_USER_PK, user.getPrimaryKey().toString());
+				}
+				link.setPage(getChangeEmailResponsePage());
+				
+				cell.add(link);
+			} else {
+				cell.add(new Text(PersonalIDFormatter.format(user.getPersonalID(), iwc.getCurrentLocale())));
+			}
+
+			cell = row.createCell();
+			cell.setStyleClass("address");
+			if (address != null) {
+				cell.add(new Text(address.getStreetAddress()));
+			}
+			else {
+				cell.add(new Text(CoreConstants.MINUS));
+			}
+
+			cell = row.createCell();
+			cell.setStyleClass("postalCode");
+			if (postalCode != null) {
+				cell.add(new Text(postalCode.getPostalAddress()));
+			}
+			else {
+				cell.add(new Text(CoreConstants.MINUS));
+			}
+
+			cell = row.createCell();
+			cell.setStyleClass("homePhone");
+			if (phone != null) {
+				cell.add(new Text(phone.getNumber()));
+			}
+			else {
+				cell.add(new Text(CoreConstants.MINUS));
+			}
+
+			cell = row.createCell();
+			cell.setStyleClass("deleteChoice");
+			
+			Link delete = new Link(getBundle().getImage("delete.png", localize("remove", "Remove")));
+			delete.addParameter(PARAMETER_CHOICE_REMOVE, choice.getPrimaryKey().toString());
+			delete.setClickConfirmation(getResourceBundle().getLocalizedString("choice.confirm_delete", "Are you sure you want to delete the choice selected?"));
+			delete.maintainParameter(PARAMETER_COURSE_PK, iwc);
+			cell.add(delete);
+
+			if (iRow % 2 == 0) {
+				row.setStyleClass("evenRow");
+			}
+			else {
+				row.setStyleClass("oddRow");
+			}
+			iRow++;
+		}
+
+		group = table.createFooterRowGroup();
+		row = group.createRow();
+
+		cell = row.createCell();
+		cell.setStyleClass("numberOfParticipants");
+		cell.setColumnSpan(columns);
+		cell.add(new Text(getResourceBundle().getLocalizedString("number_of_participants", "Number of participants") + ": " + (iRow - 1)));
+
+		return table;
 	}
 
 	
@@ -547,4 +751,12 @@ public class ChurchCourseParticipantList extends CourseParticipantsList {
 		return table;
 	}
 
+	private CourseBusiness getCourseBusiness(IWContext iwc) {
+		try {
+			return (CourseBusiness) IBOLookup.getServiceInstance(iwc,
+					CourseBusiness.class);
+		} catch (IBOLookupException e) {
+			throw new IBORuntimeException(e);
+		}
+	}
 }
