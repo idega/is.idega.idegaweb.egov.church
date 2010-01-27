@@ -323,66 +323,6 @@ public class ChurchCourseParticipantList extends CourseParticipantsList {
 			}
 		}
 
-		StringBuffer script2 = new StringBuffer();
-		script2.append("function setOptions(data) {\n").append(
-				"\tdwr.util.removeAllOptions(\"" + PARAMETER_COURSE_TYPE_PK
-						+ "\");\n").append(
-				"\tdwr.util.removeAllOptions(\"" + PARAMETER_COURSE_PK
-						+ "\");\n").append(
-				"\tdwr.util.addOptions(\"" + PARAMETER_COURSE_TYPE_PK
-						+ "\", data);\n").append("}");
-		StringBuffer script = new StringBuffer();
-		script.append("function changeValues() {\n")
-				.append(
-						"\tvar val = +$(\"" + PARAMETER_SCHOOL_TYPE_PK
-								+ "\").value;\n").append(
-						"\tvar TEST = CourseDWRUtil.getCourseTypesDWR(val, '"
-								+ iwc.getCurrentLocale().getCountry()
-								+ "', setOptions);\n").append("}");
-		StringBuffer script3 = new StringBuffer();
-		script3.append("function setCourseOptions(data) {\n").append(
-				"\tdwr.util.removeAllOptions(\"" + PARAMETER_COURSE_PK
-						+ "\");\n").append(
-				"\tdwr.util.addOptions(\"" + PARAMETER_COURSE_PK
-						+ "\", data);\n").append("}");
-		StringBuffer script4 = new StringBuffer();
-		if (showAllCourses) {
-			script4
-					.append("function changeCourseValues() {\n")
-					.append(
-							"\tCourseDWRUtil.getCourseMapDWR('"
-									+ (getSession().getProvider() != null ? getSession()
-											.getProvider().getPrimaryKey()
-											.toString()
-											: "-1") + "', dwr.util.getValue('"
-									+ PARAMETER_SCHOOL_TYPE_PK
-									+ "'), dwr.util.getValue('"
-									+ PARAMETER_COURSE_TYPE_PK + "'), '"
-									+ iwc.getCurrentLocale().getCountry()
-									+ "', setCourseOptions);\n").append("}");
-		} else {
-			script4
-					.append("function changeCourseValues() {\n")
-					.append(
-							"\tCourseDWRUtil.getCoursesMapDWR('"
-									+ (getSession().getProvider() != null ? getSession()
-											.getProvider().getPrimaryKey()
-											.toString()
-											: "-1") + "', dwr.util.getValue('"
-									+ PARAMETER_SCHOOL_TYPE_PK
-									+ "'), dwr.util.getValue('"
-									+ PARAMETER_COURSE_TYPE_PK
-									+ "'), dwr.util.getValue('"
-									+ PARAMETER_YEAR + "'), '"
-									+ iwc.getCurrentLocale().getCountry()
-									+ "', setCourseOptions);\n").append("}");
-		}
-		List<String> functions = new ArrayList<String>();
-		functions.add(script2.toString());
-		functions.add(script.toString());
-		functions.add(script3.toString());
-		functions.add(script4.toString());
-		PresentationUtil.addJavaScriptActionsToBody(iwc, functions);
 
 		DropdownMenu schoolType = new DropdownMenu(PARAMETER_SCHOOL_TYPE_PK);
 		schoolType.setId(PARAMETER_SCHOOL_TYPE_PK);
