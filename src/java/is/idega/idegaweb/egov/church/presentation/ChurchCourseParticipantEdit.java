@@ -20,7 +20,8 @@ import java.util.Iterator;
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
 
-import com.idega.block.school.presentation.SchoolDropdown;
+import com.idega.block.school.business.SchoolBusiness;
+import com.idega.block.school.data.School;
 import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
@@ -337,10 +338,17 @@ public class ChurchCourseParticipantEdit extends ApplicationForm {
 		fathersName.keepStatusOnAction(true);
 		fathersName.setValue(extraInfo.getFathersName());
 
-		DropdownMenu childSchool = new SchoolDropdown(PARAMETER_CHILD_SCHOOL,
-				dropdownSchoolTypePK.intValue());
+		DropdownMenu childSchool = new DropdownMenu(PARAMETER_CHILD_SCHOOL);
 		childSchool.addMenuElementFirst("-1", this.iwrb.getLocalizedString(
 				"child.select_school", "Please select school"));
+		try {
+			Collection<School> providers = getSchoolBusiness(iwc).getSchoolHome().findAllBySchoolType(dropdownSchoolTypePK.intValue());
+			for (School school : providers) {
+				childSchool.addMenuElement(school.getPrimaryKey().toString(), school.getName());
+			}
+		} catch (FinderException e) {
+			e.printStackTrace();
+		}
 		childSchool.keepStatusOnAction(true);
 		if (extraInfo.getSchool() != null) {
 			childSchool.setSelectedElement(extraInfo.getSchool()
@@ -1057,6 +1065,15 @@ public class ChurchCourseParticipantEdit extends ApplicationForm {
 		try {
 			return (CourseBusiness) IBOLookup.getServiceInstance(iwc,
 					CourseBusiness.class);
+		} catch (IBOLookupException e) {
+			throw new IBORuntimeException(e);
+		}
+	}
+
+	private SchoolBusiness getSchoolBusiness(IWContext iwc) {
+		try {
+			return (SchoolBusiness) IBOLookup.getServiceInstance(iwc,
+					SchoolBusiness.class);
 		} catch (IBOLookupException e) {
 			throw new IBORuntimeException(e);
 		}
