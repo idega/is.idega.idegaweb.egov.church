@@ -1011,7 +1011,7 @@ public class ChurchCourseApplication extends ApplicationForm {
 			e.printStackTrace();
 		}
 
-		CourseApplication application = getCourseBusiness(iwc).saveApplication(getCourseApplicationSession(iwc).getApplications(), contact1, iwc.getCurrentLocale());
+		CourseApplication application = getCourseBusiness(iwc).saveApplication(getCourseApplicationSession(iwc).getApplications(), null, contact1, iwc.getCurrentLocale());
 		
 		User contact2 = null;
 
