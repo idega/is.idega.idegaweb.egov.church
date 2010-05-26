@@ -531,13 +531,11 @@ public class ChurchCourseParticipantEdit extends ApplicationForm {
 
 				cell = row.createCell();
 				cell.setStyleClass("column2");
-				cell.add(new Text(course.getFirstDateOfCourse().getDateString(
-						"dd.MM.yyyy")));
+				cell.add(new Text(""));
 
 				cell = row.createCell();
 				cell.setStyleClass("column3");
-				cell.add(new Text(course.getFirstDateOfCourse().getDateString(
-						"HH:mm")));
+				cell.add(new Text(""));
 			}
 		}
 
