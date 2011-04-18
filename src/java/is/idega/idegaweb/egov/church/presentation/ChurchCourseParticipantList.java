@@ -358,7 +358,7 @@ public class ChurchCourseParticipantList extends CourseParticipantsList {
 		Integer typePK = null;
 		if (iwc.isParameterSet(PARAMETER_SCHOOL_TYPE_PK)) {
 			typePK = new Integer(iwc.getParameter(PARAMETER_SCHOOL_TYPE_PK));
-			Collection courseTypes = getBusiness().getCourseTypes(typePK);
+			Collection courseTypes = getBusiness().getCourseTypes(typePK, true);
 			if (courseTypes.size() == 1) {
 				defaultCourseType = (CourseType) courseTypes.iterator().next();
 				courseType.setSelectedElement(defaultCourseType.getPrimaryKey()
@@ -369,7 +369,7 @@ public class ChurchCourseParticipantList extends CourseParticipantsList {
 			courseType.addMenuElements(courseTypes);
 		} else if (type != null) {
 			typePK = new Integer(type.getPrimaryKey().toString());
-			Collection courseTypes = getBusiness().getCourseTypes(typePK);
+			Collection courseTypes = getBusiness().getCourseTypes(typePK, true);
 			if (courseTypes.size() == 1) {
 				showCourseType = false;
 				defaultCourseType = (CourseType) courseTypes.iterator().next();

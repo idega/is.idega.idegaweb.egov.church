@@ -64,7 +64,7 @@ public class ChurchCoursesHelperImp implements ChurchCoursesHelper {
 		
 		Collection<CourseType> allCourses = null;
 		try {
-			 allCourses = courseBusiness.getCourseTypeHome().findAll();
+			 allCourses = courseBusiness.getCourseTypeHome().findAll(true);
 		} catch(Exception e) {
 			LOGGER.log(Level.WARNING, "Error getting courses types", e);
 		}
