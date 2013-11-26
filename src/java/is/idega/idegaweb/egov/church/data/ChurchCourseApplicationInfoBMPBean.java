@@ -1,6 +1,7 @@
 package is.idega.idegaweb.egov.church.data;
 
 import is.idega.idegaweb.egov.course.data.CourseApplication;
+import is.idega.idegaweb.egov.course.data.CourseProvider;
 
 import javax.ejb.FinderException;
 
@@ -75,8 +76,8 @@ public class ChurchCourseApplicationInfoBMPBean extends GenericEntity implements
 		return getStringColumnValue(COLUMN_RELIGION);
 	}
 	
-	public School getSchool() {
-		return (School) getColumnValue(COLUMN_SCHOOL);
+	public CourseProvider getSchool() {
+		return (CourseProvider) getColumnValue(COLUMN_SCHOOL);
 	}
 	
 	public String getContactRelation() {

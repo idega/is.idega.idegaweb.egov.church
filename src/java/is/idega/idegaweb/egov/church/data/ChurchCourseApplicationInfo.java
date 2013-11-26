@@ -1,10 +1,11 @@
 package is.idega.idegaweb.egov.church.data;
 
 
-import com.idega.block.school.data.School;
-import com.idega.user.data.User;
 import is.idega.idegaweb.egov.course.data.CourseApplication;
+import is.idega.idegaweb.egov.course.data.CourseProvider;
+
 import com.idega.data.IDOEntity;
+import com.idega.user.data.User;
 
 public interface ChurchCourseApplicationInfo extends IDOEntity {
 	/**
@@ -40,7 +41,7 @@ public interface ChurchCourseApplicationInfo extends IDOEntity {
 	/**
 	 * @see is.idega.idegaweb.egov.church.data.ChurchCourseApplicationInfoBMPBean#getSchool
 	 */
-	public School getSchool();
+	public CourseProvider getSchool();
 
 	/**
 	 * @see is.idega.idegaweb.egov.church.data.ChurchCourseApplicationInfoBMPBean#getContactRelation
