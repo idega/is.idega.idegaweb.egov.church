@@ -346,6 +346,9 @@ public class ChurchCourseParticipantList extends CourseParticipantsList {
 			schoolType.addMenuElements(schoolTypes);
 		}
 
+		/* 
+		 * Course types selection 
+		 */
 		DropdownMenu courseType = new DropdownMenu(PARAMETER_COURSE_TYPE_PK);
 		courseType.setId(PARAMETER_COURSE_TYPE_PK);
 		courseType.setOnChange("changeCourseValues();");
@@ -356,28 +359,24 @@ public class ChurchCourseParticipantList extends CourseParticipantsList {
 		courseType.keepStatusOnAction(true);
 
 		Integer typePK = null;
+		Collection<CourseType> courseTypes = null;
 		if (iwc.isParameterSet(PARAMETER_SCHOOL_TYPE_PK)) {
 			typePK = new Integer(iwc.getParameter(PARAMETER_SCHOOL_TYPE_PK));
-			Collection courseTypes = getBusiness().getCourseTypes(typePK, true);
-			if (courseTypes.size() == 1) {
-				defaultCourseType = (CourseType) courseTypes.iterator().next();
-				courseType.setSelectedElement(defaultCourseType.getPrimaryKey()
-						.toString());
-			} else {
-				showCourseType = true;
-			}
-			courseType.addMenuElements(courseTypes);
 		} else if (type != null) {
 			typePK = new Integer(type.getPrimaryKey().toString());
-			Collection courseTypes = getBusiness().getCourseTypes(typePK, true);
-			if (courseTypes.size() == 1) {
-				showCourseType = false;
-				defaultCourseType = (CourseType) courseTypes.iterator().next();
-				courseType.setSelectedElement(defaultCourseType.getPrimaryKey()
-						.toString());
-			}
-			courseType.addMenuElements(courseTypes);
 		}
+
+		courseTypes = getBusiness().getCourseTypes(typePK, true);
+		if (courseTypes.size() == 1) {
+			defaultCourseType = courseTypes.iterator().next();
+			courseType.setSelectedElement(defaultCourseType.getPrimaryKey()
+					.toString());
+			showCourseType = false;
+		} else {
+			showCourseType = true;
+		}
+
+		courseType.addMenuElements(courseTypes);
 
 		int inceptionYear = Integer.parseInt(iwc.getApplicationSettings()
 				.getProperty(CourseConstants.PROPERTY_INCEPTION_YEAR, "-1"));
@@ -415,20 +414,20 @@ public class ChurchCourseParticipantList extends CourseParticipantsList {
 
 		if ((getSession().getProvider() != null && typePK != null)
 				|| showAllCourses) {
-			Collection courses = getBusiness().getCourses(
+			Collection<Course> courses = getBusiness().getCourses(
 					-1,
 					getSession().getProvider() != null ? getSession()
-							.getProvider().getPrimaryKey() : null,
-					typePK,
+							.getProvider().getPrimaryKey().toString() : null,
+					typePK.toString(),
 					defaultCourseType != null ? defaultCourseType
 							.getPrimaryKey().toString() : iwc
 							.isParameterSet(PARAMETER_COURSE_TYPE_PK) ? iwc
 							.getParameter(PARAMETER_COURSE_TYPE_PK) : null,
 					fromDate, toDate);
 
-			Iterator iter = courses.iterator();
+			Iterator<Course> iter = courses.iterator();
 			while (iter.hasNext()) {
-				Course element = (Course) iter.next();
+				Course element = iter.next();
 				IWTimestamp date = new IWTimestamp(element.getStartDate());
 				course.addMenuElement(element.getPrimaryKey().toString(), date
 						.getDateString("dd.MM.yyyy HH:mm"));
