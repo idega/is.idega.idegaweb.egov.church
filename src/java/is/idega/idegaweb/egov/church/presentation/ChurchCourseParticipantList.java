@@ -6,6 +6,7 @@ import is.idega.idegaweb.egov.course.CourseConstants;
 import is.idega.idegaweb.egov.course.business.CourseBusiness;
 import is.idega.idegaweb.egov.course.data.Course;
 import is.idega.idegaweb.egov.course.data.CourseChoice;
+import is.idega.idegaweb.egov.course.data.CourseProviderType;
 import is.idega.idegaweb.egov.course.data.CourseType;
 import is.idega.idegaweb.egov.course.presentation.CourseParticipantsList;
 
@@ -150,7 +151,7 @@ public class ChurchCourseParticipantList extends CourseParticipantsList {
 
 		Course course = null;
 		CourseType type = null;
-		Collection choices = new ArrayList();
+		Collection<CourseChoice> choices = new ArrayList<CourseChoice>();
 		if (iwc.isParameterSet(PARAMETER_COURSE_PK)) {
 			choices = getBusiness().getCourseChoices(iwc.getParameter(PARAMETER_COURSE_PK), false);
 			course = getBusiness().getCourse(iwc.getParameter(PARAMETER_COURSE_PK));
@@ -160,11 +161,8 @@ public class ChurchCourseParticipantList extends CourseParticipantsList {
 			}
 		}
 
-		Iterator iter = choices.iterator();
-		while (iter.hasNext()) {
+		for (CourseChoice choice: choices) {
 			row = group.createRow();
-
-			CourseChoice choice = (CourseChoice) iter.next();
 			User user = choice.getUser();
 			Address address = getUserBusiness().getUsersMainAddress(user);
 			PostalCode postalCode = null;
@@ -295,15 +293,7 @@ public class ChurchCourseParticipantList extends CourseParticipantsList {
 		PresentationUtil.addJavaScriptSourcesLinesToHeader(iwc, scripts);
 
 		if (!isSchoolUser()) {
-			DropdownMenu providers = null;
-			if (iwc.getAccessController().hasRole(
-					CourseConstants.SUPER_ADMINISTRATOR_ROLE_KEY, iwc)) {
-				providers = getAllProvidersDropdown(iwc);
-			} else if (iwc.getAccessController().hasRole(
-					CourseConstants.ADMINISTRATOR_ROLE_KEY, iwc)) {
-				providers = getProvidersDropdown(iwc);
-			}
-
+			DropdownMenu providers = getProvidersDropdown(iwc);
 			if (providers != null) {
 				providers.addMenuElement("-99", getResourceBundle()
 						.getLocalizedString("all_providers", "All providers"));
@@ -335,8 +325,8 @@ public class ChurchCourseParticipantList extends CourseParticipantsList {
 
 		boolean showTypes = false;
 		if (getSession().getProvider() != null) {
-			Collection schoolTypes = getBusiness().getSchoolTypes(
-					getSession().getProvider());
+			Collection<? extends CourseProviderType> schoolTypes = getBusiness()
+					.getSchoolTypes(getSession().getProvider());
 			if (schoolTypes.size() == 1) {
 				type = (SchoolType) schoolTypes.iterator().next();
 				schoolType.setSelectedElement(type.getPrimaryKey().toString());
@@ -579,7 +569,7 @@ public class ChurchCourseParticipantList extends CourseParticipantsList {
 
 		Course course = null;
 		CourseType type = null;
-		Collection choices = new ArrayList();
+		Collection<CourseChoice> choices = new ArrayList<CourseChoice>();
 		if (iwc.isParameterSet(PARAMETER_COURSE_PK)) {
 			choices = getBusiness().getCourseChoices(
 					iwc.getParameter(PARAMETER_COURSE_PK), false);
@@ -593,11 +583,9 @@ public class ChurchCourseParticipantList extends CourseParticipantsList {
 			choices = getBusiness().getAllChoicesByCourseAndDate(null, null, null);
 		}
 
-		Iterator iter = choices.iterator();
-		while (iter.hasNext()) {
+		for (CourseChoice choice : choices) {
 			row = group.createRow();
 
-			CourseChoice choice = (CourseChoice) iter.next();
 			User user = choice.getUser();
 			Address address = getUserBusiness().getUsersMainAddress(user);
 			PostalCode postalCode = null;
