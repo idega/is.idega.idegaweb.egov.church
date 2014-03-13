@@ -17,7 +17,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import com.idega.block.school.data.SchoolType;
 import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
@@ -323,13 +322,13 @@ public class ChurchCourseParticipantList extends CourseParticipantsList {
 								"Select school type"));
 		schoolType.keepStatusOnAction(true);
 
-		boolean showTypes = false;
+		boolean showTypes = false;		
 		if (getSession().getProvider() != null) {
 			Collection<? extends CourseProviderType> schoolTypes = getBusiness()
 					.getSchoolTypes(getSession().getProvider());
 			if (schoolTypes.size() == 1) {
-				type = (SchoolType) schoolTypes.iterator().next();
-				schoolType.setSelectedElement(type.getPrimaryKey().toString());
+				setType(schoolTypes.iterator().next());
+				schoolType.setSelectedElement(getType().getPrimaryKey().toString());
 			} else {
 				showTypes = true;
 			}
@@ -352,8 +351,8 @@ public class ChurchCourseParticipantList extends CourseParticipantsList {
 		Collection<CourseType> courseTypes = null;
 		if (iwc.isParameterSet(PARAMETER_SCHOOL_TYPE_PK)) {
 			typePK = new Integer(iwc.getParameter(PARAMETER_SCHOOL_TYPE_PK));
-		} else if (type != null) {
-			typePK = new Integer(type.getPrimaryKey().toString());
+		} else if (getType() != null) {
+			typePK = new Integer(getType().getPrimaryKey().toString());
 		}
 
 		courseTypes = getBusiness().getCourseTypes(typePK, true);
@@ -432,8 +431,8 @@ public class ChurchCourseParticipantList extends CourseParticipantsList {
 			formItem.add(label);
 			formItem.add(schoolType);
 			layer.add(formItem);
-		} else if (type != null) {
-			layer.add(new HiddenInput(PARAMETER_SCHOOL_TYPE_PK, type
+		} else if (getType() != null) {
+			layer.add(new HiddenInput(PARAMETER_SCHOOL_TYPE_PK, getType()
 					.getPrimaryKey().toString()));
 		}
 
